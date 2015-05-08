@@ -17,11 +17,11 @@ public class Main {
 				reserveWords, unknownVariables, commentSymbols);
 
 		// Scan code
-		String codeTextLocation = "./src/main/resource/code/codeV3.txt";
+		String codeTextLocation = "./src/main/resource/code/codeV1.txt";
 		cosc470.compiler.v3.scanner.ScanCode scanCode = new cosc470.compiler.v3.scanner.ScanCode(
 				codeTextLocation);
 
-		// Run basic syntax checker and create tokens
+		// Run basic syntax checker, create tokens, and creates symbol table
 		cosc470.compiler.v3.syntaxchecker.SyntaxChecker syntaxChecker = new cosc470.compiler.v3.syntaxchecker.SyntaxChecker();
 
 		//
@@ -29,6 +29,8 @@ public class Main {
 
 		// Print all program operations
 		//database.printDatabaseAndProcesses();
+		
+		
 
 	}
 }

@@ -20,6 +20,7 @@ public class SyntaxChecker {
 		createTokens();
 		checkIdentifiers();
 		setSizeDefaults();
+		createSymbolTable();
 	}
 
 	private void createTokens() {
@@ -359,34 +360,16 @@ public class SyntaxChecker {
 		}
 	}
 
-	// The following syntax checker method should be obsolete; as it would be
-	// covered under parse tree creation
-	/*
-	 * checkBasicSyntax(cosc470.compiler.v3.database.Database.getCodeList().get(0
-	 * ), "START");
-	 * checkBasicSyntax(cosc470.compiler.v3.database.Database.getCodeList
-	 * ().get(cosc470.compiler.v3.database.Database.getCodeList().size() - 2),
-	 * "END_Minus_1");
-	 * checkBasicSyntax(cosc470.compiler.v3.database.Database.getCodeList
-	 * ().get(cosc470.compiler.v3.database.Database.getCodeList().size() - 1),
-	 * "END");
-	 * 
-	 * public static void checkBasicSyntax(String code, String location) {
-	 * String temp = "\\"; try { if (location.equals("START")) { if
-	 * (!((code.equals("DECLARE")) || (code.equals("BEGIN")))) {
-	 * System.out.printf(
-	 * "\nERROR\nThe Following Syntax Errors Have Occured: Program Must Start With Either 'DECLARE' or 'BEGIN'"
-	 * ); System.exit(0); } } else if (location.equals("END_Minus_1")) { if
-	 * (!(code.equals("END;"))) { System.out.printf(
-	 * "\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'"
-	 * , temp.charAt(0)); System.exit(0); } } else if (location.equals("END")) {
-	 * if (!(code.equals("\\"))) { System.out.printf(
-	 * "\nERROR\nThe Following Syntax Errors Have Occured: Program Must End With 'END;' followed by '%s'"
-	 * , temp.charAt(0)); System.exit(0); } } } catch (Exception ex) {
-	 * System.out.printf(
-	 * "\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n"
-	 * , ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
-	 * ex.getMessage(), ex.getLocalizedMessage()); //ex.printStackTrace(); } }
-	 * //
-	 */
+	private static void createSymbolTable() {
+		for (cosc470.compiler.v3.database.Token token : cosc470.compiler.v3.database.Database
+				.getTokens()) {
+			if ((token.getGrammarId().equals("identifier"))
+					|| (token.getGrammarId().equals("'c'"))
+					|| (token.getGrammarId().equals("'string_literal'"))
+					|| (token.getGrammarId().equals("num"))) {
+				cosc470.compiler.v3.database.Database.addSymbolTableItem(token);
+			}
+		}
+
+	}
 }
