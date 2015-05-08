@@ -19,7 +19,7 @@ public class AntlrOperator {
 				code = code + temp.getGrammarId();
 			}
 			
-			//System.out.println(code);
+			System.out.println(code);
 
 			CharStream charStream = new ANTLRStringStream(code);
 			GrammarV3Lexer lexer = new GrammarV3Lexer(charStream);
