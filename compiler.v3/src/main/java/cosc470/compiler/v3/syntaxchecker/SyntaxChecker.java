@@ -20,7 +20,7 @@ public class SyntaxChecker {
 		createTokens();
 		checkIdentifiers();
 		setSizeDefaults();
-		createSymbolTable();
+		//createSymbolTable();
 	}
 
 	private void createTokens() {
@@ -367,7 +367,7 @@ public class SyntaxChecker {
 		}
 	}
 
-	private static void createSymbolTable() {
+	/*private static void createSymbolTable() {
 		for (cosc470.compiler.v3.database.Token token : cosc470.compiler.v3.database.Database
 				.getTokens()) {
 			if ((token.getGrammarId().equals("identifier"))
@@ -378,5 +378,5 @@ public class SyntaxChecker {
 			}
 		}
 
-	}
+	}*/
 }

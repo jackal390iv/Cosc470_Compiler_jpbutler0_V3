@@ -10,8 +10,9 @@ public class Database {
 	private static ArrayList<String> reserveWords, unknownVariables,
 			combinableWords, nonCombinableReserveWords, codeText, codeList;
 
-	private static ArrayList<cosc470.compiler.v3.database.Token> tokens,
-			symbolTable;
+	private static ArrayList<cosc470.compiler.v3.database.Token> tokens;
+	
+	private static ArrayList<cosc470.compiler.v3.database.SymbolTableItem> symbolTable;
 
 	public Database() {
 		commentSymbol = null;
@@ -25,7 +26,7 @@ public class Database {
 		codeText = new ArrayList<String>();
 		codeList = new ArrayList<String>();
 		tokens = new ArrayList<cosc470.compiler.v3.database.Token>();
-		symbolTable = new ArrayList<cosc470.compiler.v3.database.Token>();
+		symbolTable = new ArrayList<cosc470.compiler.v3.database.SymbolTableItem>();
 	}
 
 	public static void setCommentSymbol(String symbol) {
@@ -269,10 +270,52 @@ public class Database {
 		}
 		System.out.println("\n");
 	}
+	
+	public static String findID(int idCount){
+		String base="FAILURE";
+		int counter=-1;
+		for (cosc470.compiler.v3.database.Token temp : tokens) {
+			if(temp.getGrammarId().equals("identifier")){
+				counter++;
+				if(counter==idCount){
+					base=temp.getValue();
+				}
+			}
+		}
+		return base;
+	}
+	
+	public static String findStringLiteral(int strCount){
+		String base="FAILURE";
+		int counter=-1;
+		for (cosc470.compiler.v3.database.Token temp : tokens) {
+			if(temp.getGrammarId().equals("'string_literal'")){
+				counter++;
+				if(counter==strCount){
+					base=temp.getValue();
+				}
+			}
+		}
+		return base;
+	}
+	
+	public static String findChar(int charCount){
+		String base="FAILURE";
+		int counter=-1;
+		for (cosc470.compiler.v3.database.Token temp : tokens) {
+			if(temp.getGrammarId().equals("'c'")){
+				counter++;
+				if(counter==charCount){
+					base=temp.getValue();
+				}
+			}
+		}
+		return base;
+	}
 
-	public static void addSymbolTableItem(Token symbolTableItem) {
+	public static void addSymbolTableItem(String name, String type,String size, String value) {
 		try {
-			symbolTable.add(symbolTableItem);
+			symbolTable.add(new SymbolTableItem(name,type,size,value));
 		} catch (Exception ex) {
 			System.out
 					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
@@ -283,14 +326,14 @@ public class Database {
 		}
 	}
 
-	public static ArrayList<cosc470.compiler.v3.database.Token> getSymbolTableItems() {
+	public static ArrayList<cosc470.compiler.v3.database.SymbolTableItem> getSymbolTableItems() {
 		return symbolTable;
 	}
 
 	public static void printSymbolTableItems() {
 		System.out.printf("\n\nSymbol Table Items:");
-		for (cosc470.compiler.v3.database.Token temp : symbolTable) {
-			temp.printIdAndValue();
+		for (cosc470.compiler.v3.database.SymbolTableItem symbolTableItem : symbolTable) {
+			symbolTableItem.printSymbolTableItemData();
 		}
 		System.out.println("\n");
 	}

@@ -13,12 +13,19 @@ public class AntlrOperator {
 
 	private void runTest() {
 		try {
+			
+			/////////////////////////////////////////////////////////////////check for begin to change
 			String code = "";
 			for (cosc470.compiler.v3.database.Token temp : cosc470.compiler.v3.database.Database
 					.getTokens()) {
-				code = code + temp.getGrammarId();
+				/*if (temp.getGrammarId().equals("num")) {
+					code = code + temp.getValue();
+				} else {
+					code = code + temp.getGrammarId();
+				}*/
+				code = code + temp.getValue();
 			}
-			
+
 			System.out.println(code);
 
 			CharStream charStream = new ANTLRStringStream(code);
