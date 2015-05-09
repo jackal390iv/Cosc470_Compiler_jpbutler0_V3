@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Database {
 
 	private static String commentSymbol, commentBlockStartSymbol,
-			commentBlockEndSymbol;
+			commentBlockEndSymbol,antlrCodeInput,antlrOperationsList;
 
 	private static ArrayList<String> reserveWords, unknownVariables,
 			combinableWords, nonCombinableReserveWords, codeText, codeList;
@@ -352,6 +352,22 @@ public class Database {
 		}
 		System.out.println("\n");
 	}
+	
+	public static void setAntlrCodeInput(String antlrCode){
+		antlrCodeInput=antlrCode;
+	}
+	
+	public static void printAntlrCodeInput(){
+		System.out.printf("\n\nAntlr Code Input: \n%s",antlrCodeInput);
+	}
+	
+	public static void setAntlrOperationsList(String antlrOperations){
+		antlrOperationsList=antlrOperations;
+	}
+	
+	public static void printAntlrOperationsList(){
+		System.out.printf("\n\nAntlr Operations: \n%s",antlrOperationsList);
+	}	
 
 	public static void printDatabaseAndProcesses() {
 		System.out.printf("\n\nDatabase And Processes:");
@@ -364,6 +380,8 @@ public class Database {
 		printCodeList();
 		printTokens();
 		printSymbolTableItems();
+		printAntlrCodeInput();
+		printAntlrOperationsList();
 	}
 
 }

@@ -21,7 +21,7 @@ int numCount=0;
 }
 
 block: declarations compound_statement end_program
-{System.out.println($compound_statement.operations);};
+{cosc470.compiler.v3.database.Database.setAntlrOperationsList($compound_statement.operations);};
 
 declarations: 'DECLARE' declare_rest|empty;
 
@@ -65,7 +65,6 @@ numbers returns [String type,String size]:
 
 size_mis returns [String size]: 
 semicolon_left num semicolon_right {$size=$num.size;};
-
 
   // ///////////////////////FIX THIS/////////////////////////////////////////
 compound_statement returns [String operations]: 
@@ -141,7 +140,7 @@ identifier equals right_hand_side
 {$operations="AntlrOperator.leftHandSideOperator("+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+")";};
 
 right_hand_side returns [String value, String OWtype, String OWsize]: 
-expression{$value=$expression.value;$OWtype="";$OWsize="";}
+expression{$value=$expression.value;$OWtype="";$OWsize=$expression.OWsize;}
 |string_literal{$value=$string_literal.value;$OWtype="";$OWsize="";}
 |single_char{$value=$single_char.value;$OWtype="";$OWsize="";}
 |casting semicolon_left expression semicolon_right{$value=$expression.value;$OWtype=$casting.OWtype;$OWsize=$casting.OWsize;};
@@ -149,36 +148,83 @@ expression{$value=$expression.value;$OWtype="";$OWsize="";}
 casting returns [String OWtype, String OWsize]: 
 data_type {$OWtype=$data_type.type;$OWsize=$data_type.size;};
 
+expression returns [String value, String OWsize]: 
+a g 
+{$value=AntlrOperator.processExpression($a.value+$g.value);
+ if($value.matches("-?\\d+(\\.\\d+)?")){
+  $OWsize=$value;
+ }else{
+  $OWsize="";
+}
+};
 
-  // ///////////////////////FIX THIS/////////////////////////////////////////
-expression returns [String value]: 
-a g {$value="value";};
+g returns [String value]: 
+relop a g_help 
+{$value=$relop.symbol+$a.value+$g_help.value;}
+| empty
+{$value="";};
 
-g: 
-relop a g 
-{System.out.println("\n\nRelop: "+$relop.symbol);}
-| empty;
+g_help returns [String value]: 
+g{$value=$g.value;};
 
-a: 
-c b;
+a returns [String value]: 
+c b
+{$value=$c.value+$b.value;};
 
-b: 
-addop c b 
-{System.out.println("\n\nAddop: "+$addop.symbol);}
-|empty;
+b returns [String value]: 
+addop c b_help 
+{$value=$addop.symbol+$c.value+$b_help.value;}
+|empty
+{$value="";};
 
-c: 
-pre_factor d;
+b_help returns [String value]: 
+b{$value=$b.value;};
 
-d: 
-mulop pre_factor d 
-{System.out.println("\n\nMulop: "+$mulop.symbol);}
-| empty;
+c returns [String value]: 
+pre_factor d
+{$value=$pre_factor.value+$d.value;};
+
+d returns [String value]: 
+mulop pre_factor d_help 
+{$value=$mulop.symbol+$pre_factor.value+$d_help.value;}
+| empty
+{$value="";};
+
+d_help returns [String value]: 
+d{$value=$d.value;};
 
 pre_factor returns [String value]: 
-'NOT' pre_factor 
+'NOT' helper_factor 
+{
+  if($helper_factor.value.equals("TRUE")){
+    $value="FALSE";
+  }  
+  else if($helper_factor.value.equals("FALSE")){
+    $value="TRUE";
+  }
+  else if($helper_factor.value.matches("-?\\d+(\\.\\d+)?")){
+    $value=Integer.toString((Integer.parseInt($helper_factor.value)*-1));
+  }
+  else{
+    String temp=AntlrOperator.getSymbolTableValue_byName($helper_factor.value);
+    
+    if(temp.equals("TRUE")){
+    $value="FALSE";
+  }  
+  else if(temp.equals("FALSE")){
+    $value="TRUE";
+  }
+  else if(temp.matches("-?\\d+(\\.\\d+)?")){
+    $value=Integer.toString((Integer.parseInt(temp)*-1));
+  }
+    
+  }
+}
 |factor
-{$value=$factor.value;}; 
+{$value=$factor.value;};
+
+helper_factor returns[String value]:
+pre_factor {$value=$pre_factor.value;}; 
 
 factor returns [String value]: 
 identifier {$value=$identifier.value;}
