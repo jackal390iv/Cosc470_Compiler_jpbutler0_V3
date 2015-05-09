@@ -66,7 +66,6 @@ numbers returns [String type,String size]:
 size_mis returns [String size]: 
 semicolon_left num semicolon_right {$size=$num.size;};
 
-  // ///////////////////////FIX THIS/////////////////////////////////////////
 compound_statement returns [String operations]: 
 'BEGIN' optional_statements 'END' end_block
 {$operations=$optional_statements.operations;};
@@ -150,7 +149,8 @@ data_type {$OWtype=$data_type.type;$OWsize=$data_type.size;};
 
 expression returns [String value, String OWsize]: 
 a g 
-{$value=AntlrOperator.processExpression($a.value+$g.value);
+{$value="";
+$value=AntlrOperator.processExpression($a.value+$g.value);
  if($value.matches("-?\\d+(\\.\\d+)?")){
   $OWsize=$value;
  }else{
@@ -227,7 +227,7 @@ helper_factor returns[String value]:
 pre_factor {$value=$pre_factor.value;}; 
 
 factor returns [String value]: 
-identifier {$value=$identifier.value;}
+identifier {$value=AntlrOperator.getSymbolTableValue_byName($identifier.value);}
 |num {$value=$num.size;}
 |'TRUE'{$value="TRUE";}
 |'FALSE'{$value="FALSE";}

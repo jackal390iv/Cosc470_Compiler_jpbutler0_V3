@@ -30,7 +30,7 @@ public class Main {
 		cosc470.compiler.v3.antlr.AntlrOperator antlrOperator = new cosc470.compiler.v3.antlr.AntlrOperator();
 
 		// Print all program operations
-		database.printDatabaseAndProcesses();
+		//database.printDatabaseAndProcesses();
 		
 
 		

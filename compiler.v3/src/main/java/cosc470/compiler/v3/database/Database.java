@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 public class Database {
 
-	private static String commentSymbol, commentBlockStartSymbol,
-			commentBlockEndSymbol,antlrCodeInput,antlrOperationsList;
+	private static String commentSymbol, commentBlockStartSymbol, commentBlockEndSymbol, antlrCodeInput, antlrOperationsList;
 
-	private static ArrayList<String> reserveWords, unknownVariables,
-			combinableWords, nonCombinableReserveWords, codeText, codeList;
+	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList;
 
 	private static ArrayList<cosc470.compiler.v3.database.Token> tokens;
 
@@ -56,21 +54,16 @@ public class Database {
 	public static void printCommentSymbols() {
 		System.out.printf("\n\nComment Symbols:\n");
 		System.out.printf("%-15s: %-30s", "Comment Symbol", getCommentSymbol());
-		System.out.printf("%-15s: %-30s", "Comment Block Start Symbol",
-				getCommentBlockStartSymbol());
-		System.out.printf("%-15s: %-30s", "Comment Block End Symbol",
-				getCommentBlockEndSymbol());
+		System.out.printf("%-15s: %-30s", "Comment Block Start Symbol", getCommentBlockStartSymbol());
+		System.out.printf("%-15s: %-30s", "Comment Block End Symbol", getCommentBlockEndSymbol());
 	}
 
 	public static void addReserveWord(String reserveWord) {
 		try {
 			reserveWords.add(reserveWord);
 		} catch (Exception ex) {
-			System.out
-					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
-							ex.getClass().getName(), ex.getStackTrace()[2],
-							ex.getCause(), ex.getMessage(),
-							ex.getLocalizedMessage());
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
 	}
@@ -98,11 +91,8 @@ public class Database {
 		try {
 			unknownVariables.add(unknownVariable);
 		} catch (Exception ex) {
-			System.out
-					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
-							ex.getClass().getName(), ex.getStackTrace()[2],
-							ex.getCause(), ex.getMessage(),
-							ex.getLocalizedMessage());
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
 	}
@@ -132,8 +122,7 @@ public class Database {
 				combinableWords.add(combinableWord);
 			} else {
 				for (int i = 0; i < combinableWords.size(); i++) {
-					if (combinableWords.get(i).length() < combinableWord
-							.length()) {
+					if (combinableWords.get(i).length() < combinableWord.length()) {
 						combinableWords.add(i, combinableWord);
 						break;
 					} else if (i == combinableWords.size() - 1) {
@@ -143,11 +132,8 @@ public class Database {
 				}
 			}
 		} catch (Exception ex) {
-			System.out
-					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
-							ex.getClass().getName(), ex.getStackTrace()[2],
-							ex.getCause(), ex.getMessage(),
-							ex.getLocalizedMessage());
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
 	}
@@ -171,16 +157,12 @@ public class Database {
 		System.out.printf("\n");
 	}
 
-	public static void addNonCombinableReserveWord(
-			String nonCombinableReserveWord) {
+	public static void addNonCombinableReserveWord(String nonCombinableReserveWord) {
 		try {
 			nonCombinableReserveWords.add(nonCombinableReserveWord);
 		} catch (Exception ex) {
-			System.out
-					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
-							ex.getClass().getName(), ex.getStackTrace()[2],
-							ex.getCause(), ex.getMessage(),
-							ex.getLocalizedMessage());
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
 	}
@@ -250,11 +232,8 @@ public class Database {
 		try {
 			tokens.add(token);
 		} catch (Exception ex) {
-			System.out
-					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
-							ex.getClass().getName(), ex.getStackTrace()[2],
-							ex.getCause(), ex.getMessage(),
-							ex.getLocalizedMessage());
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
 	}
@@ -327,16 +306,12 @@ public class Database {
 		return base;
 	}
 
-	public static void addSymbolTableItem(String name, String type,
-			String size, String value) {
+	public static void addSymbolTableItem(String name, String type, String size, String value) {
 		try {
 			symbolTable.add(new SymbolTableItem(name, type, size, value));
 		} catch (Exception ex) {
-			System.out
-					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
-							ex.getClass().getName(), ex.getStackTrace()[2],
-							ex.getCause(), ex.getMessage(),
-							ex.getLocalizedMessage());
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
 	}
@@ -352,22 +327,30 @@ public class Database {
 		}
 		System.out.println("\n");
 	}
-	
-	public static void setAntlrCodeInput(String antlrCode){
-		antlrCodeInput=antlrCode;
+
+	public static void setAntlrCodeInput(String antlrCode) {
+		antlrCodeInput = antlrCode;
 	}
-	
-	public static void printAntlrCodeInput(){
-		System.out.printf("\n\nAntlr Code Input: \n%s",antlrCodeInput);
+
+	public static String getAntlrCodeInput() {
+		return antlrCodeInput;
 	}
-	
-	public static void setAntlrOperationsList(String antlrOperations){
-		antlrOperationsList=antlrOperations;
+
+	public static void printAntlrCodeInput() {
+		System.out.printf("\n\nAntlr Code Input: \n%s", antlrCodeInput);
 	}
-	
-	public static void printAntlrOperationsList(){
-		System.out.printf("\n\nAntlr Operations: \n%s",antlrOperationsList);
-	}	
+
+	public static void setAntlrOperationsList(String antlrOperations) {
+		antlrOperationsList = antlrOperations;
+	}
+
+	public static String getAntlrOperationsList() {
+		return antlrOperationsList;
+	}
+
+	public static void printAntlrOperationsList() {
+		System.out.printf("\n\nAntlr Operations: \n%s", antlrOperationsList);
+	}
 
 	public static void printDatabaseAndProcesses() {
 		System.out.printf("\n\nDatabase And Processes:");

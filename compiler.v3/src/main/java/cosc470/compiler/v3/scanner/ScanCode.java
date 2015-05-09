@@ -86,21 +86,37 @@ public class ScanCode {
             System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
+        
+      
     }
 
     private void checkForBasicReserveWords() {
         String[] holder;
+        boolean isCombinable=false;
         try {
             for (int i = 0; i < cosc470.compiler.v3.database.Database.getCodeText().size(); i++) {
                 for (int k = 0; k < cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().size(); k++) {
                     if ((cosc470.compiler.v3.database.Database.getCodeText().get(i).contains(cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k))) && (!(cosc470.compiler.v3.database.Database.getCodeText().get(i).equals(cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k))))) {
-                        holder = new String[]{cosc470.compiler.v3.database.Database.getCodeText().get(i).substring(0, cosc470.compiler.v3.database.Database.getCodeText().get(i).indexOf(cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k))), cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k), cosc470.compiler.v3.database.Database.getCodeText().get(i).substring(cosc470.compiler.v3.database.Database.getCodeText().get(i).indexOf(cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k)) + cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k).length(), cosc470.compiler.v3.database.Database.getCodeText().get(i).length())};
+                    	/*isCombinable=false;
+                    	
+                    	for(int q=0;q<cosc470.compiler.v3.database.Database.getCombinableWords().size();q++){
+                        	if(cosc470.compiler.v3.database.Database.getCodeText().get(i).contains(cosc470.compiler.v3.database.Database.getCombinableWords().get(q))){
+                        		isCombinable=true;
+                        	}
+                        }//*/
+                    	
+                    	//if(isCombinable==false){
+                    	holder = new String[]{cosc470.compiler.v3.database.Database.getCodeText().get(i).substring(0, cosc470.compiler.v3.database.Database.getCodeText().get(i).indexOf(cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k))), cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k), cosc470.compiler.v3.database.Database.getCodeText().get(i).substring(cosc470.compiler.v3.database.Database.getCodeText().get(i).indexOf(cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k)) + cosc470.compiler.v3.database.Database.getNonCombinableReserveWords().get(k).length(), cosc470.compiler.v3.database.Database.getCodeText().get(i).length())};
                         cosc470.compiler.v3.database.Database.getCodeText().remove(i);
                         for (int j = 2; j >= 0; j--) {
                             if (!(holder[j].isEmpty())) {
                                 cosc470.compiler.v3.database.Database.getCodeText().add(i, holder[j]);
                             }
                         }
+                    	//}
+                        
+                        
+                        
                     }
                 }
             }
@@ -108,6 +124,8 @@ public class ScanCode {
             System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
+        
+        //cosc470.compiler.v3.database.Database.printCodeText();
     }
 
     private void checkForCombinables() {

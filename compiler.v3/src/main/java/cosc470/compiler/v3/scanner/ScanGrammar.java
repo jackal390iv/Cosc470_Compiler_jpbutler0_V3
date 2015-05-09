@@ -68,6 +68,10 @@ public class ScanGrammar {
 
 	private void addCombinableWords() {
 		try {
+			// glitch - had to manually add this line
+			cosc470.compiler.v3.database.Database.addCombinableWord(":=");
+			cosc470.compiler.v3.database.Database.addCombinableWord("==");
+
 			for (String tester : cosc470.compiler.v3.database.Database.getReserveWords()) {
 				for (String checker : cosc470.compiler.v3.database.Database.getReserveWords()) {
 					if (((tester.contains(checker)) && (!(tester.equals(checker)))) || (tester.contains(" "))) {
@@ -82,11 +86,15 @@ public class ScanGrammar {
 					ex.getMessage(), ex.getLocalizedMessage());
 			// ex.printStackTrace();
 		}
+		
 	}
 
 	private void addNonCombinableReserveWords() {
 		boolean exists;
 		try {
+			// glitch - had to manually add this line
+			cosc470.compiler.v3.database.Database.addNonCombinableReserveWord("=");
+
 			for (String temp : cosc470.compiler.v3.database.Database.getReserveWords()) {
 				exists = false;
 				for (String Rcombinables : cosc470.compiler.v3.database.Database.getCombinableWords()) {
@@ -105,6 +113,7 @@ public class ScanGrammar {
 					cosc470.compiler.v3.database.Database.addNonCombinableReserveWord(temp);
 				}
 			}
+
 		} catch (Exception ex) {
 			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
 					ex.getMessage(), ex.getLocalizedMessage());
