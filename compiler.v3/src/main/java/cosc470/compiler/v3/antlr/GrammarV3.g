@@ -6,94 +6,258 @@ options {
 
 @header {
   package cosc470.compiler.v3.antlr;
-  import java.util.ArrayList;
-   import cosc470.compiler.v3.database.Database;
+  //import cosc470.compiler.v3.database.Database;
   }
 
 @members{
 int idCount=0;
 int strCount=0;
 int charCount=0;
+int numCount=0;
 }
 
 @lexer::header {
   package cosc470.compiler.v3.antlr;
 }
 
-block: declarations compound_statement end_program;
+block: declarations compound_statement end_program
+{System.out.println($compound_statement.operations);};
 
 declarations: 'DECLARE' declare_rest|empty;
 
-declare_rest: identifier_main type end_block declare_rest{System.out.println($identifier_main.name + $type.type + $type.size+$type.value + $type.overwrite);}|empty; 
+declare_rest: identifier type end_block declare_rest
+{
+  String name,type,size,value;
+  name=$identifier.value;
+  type= $type.type;
+  size=$type.size;
+  value=$type.value;
+   
+  if(!($type.OWtype.equals(""))){
+    type=$type.OWtype;
+    size=$type.OWsize;
+  }
+  
+  cosc470.compiler.v3.database.Database.addSymbolTableItem(name,type,size,value);
+  
+}|empty; 
 
-identifier_main returns [String name]: (('a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'|'i'|'j'|'k'|'l'|'m'|'n'|'o'|'p'|'q'|'r'|'s'|'t'|'u'|'v'|'w'|'x'|'y'|'z'|'!'|'~'|'`'|'@'|'#'|'$'|'^'|'_'|'?')+){$name=$identifier_main.text;idCount++;};
+type returns [String type,String size, String value, String OWtype, String OWsize]: 
+data_type mis {$type=$data_type.type;$size=$data_type.size;$value=$mis.value;$OWtype=$mis.OWtype;$OWsize=$mis.OWsize;};
 
-type returns [String type,String size, String value, String overwrite]: data_type mis {$type=$data_type.type;$size=$data_type.size;$value=$mis.value;$overwrite=$mis.overwrite;};
+mis returns [String value,String OWtype, String OWsize]: 
+equals right_hand_side {$value=$right_hand_side.value;$OWtype=$right_hand_side.OWtype;$OWsize=$right_hand_side.OWsize;}
+|empty{$value="";$OWtype="";$OWsize="";};
 
-mis returns [String value,String overwrite]: equals right_hand_side {$value=$right_hand_side.value;$overwrite=$right_hand_side.overwrite;}|empty{$value="";$overwrite="";};
+data_type returns [String type,String size]: 
+characters{$type=$characters.type;$size=$characters.size;} 
+|numbers{$type=$numbers.type;$size=$numbers.size;}
+|'BOOLEAN'{$type="BOOLEAN";$size="6";};
 
-data_type returns [String type,String size]: characters{$type=$characters.type;$size=$characters.size;} |numbers{$type=$numbers.type;$size=$numbers.size;}|'BOOLEAN'{$type="BOOLEAN";$size="5";};
+characters returns [String type,String size]: 
+'CHAR'{$type="CHAR";$size="3";}
+|'VARCHAR2' size_mis{$type="VARCHAR2";$size=$size_mis.size;if($size==""){$size="6";}};
 
-characters returns [String type,String size]: 'CHAR'{$type="CHAR";$size="3";}|'VARCHAR2' size_mis{$type="VARCHAR2";$size=$size_mis.size;};
+numbers returns [String type,String size]: 
+'NUMBER' size_mis {$type="NUMBER";$size=$size_mis.size;if($size==""){$size="3";}}
+|'SMALLINT' size_mis{$type="SMALLINT";$size=$size_mis.size;if($size==""){$size="3";}}
+| 'POSITIVE' size_mis{$type="POSITIVE";$size=$size_mis.size;if($size==""){$size="3";}};
 
-numbers returns [String type,String size]: 'NUMBER' size_mis {$type="NUMBER";$size=$size_mis.size;}|'SMALLINT' size_mis{$type="SMALLINT";$size=$size_mis.size;}| 'POSITIVE' size_mis{$type="POSITIVE";$size=$size_mis.size;};
+size_mis returns [String size]: 
+semicolon_left num semicolon_right {$size=$num.size;};
 
-size_mis returns [String size]: semicolon_left num semicolon_right {$size=$num.size;};
 
-compound_statement: 'BEGIN' optional_statements 'END' end_block;
+  // ///////////////////////FIX THIS/////////////////////////////////////////
+compound_statement returns [String operations]: 
+'BEGIN' optional_statements 'END' end_block
+{$operations=$optional_statements.operations;};
 
-optional_statements: 'NULL' end_block| statement_list;
+optional_statements returns [String operations]: 
+'NULL' end_block| statement_list
+{$operations=$statement_list.operations;};
 
-statement_list: h i;       
+statement_list returns [String operations]: 
+h i
+{$operations=$h.operations+","+$i.operations;};       
 
-i: end_block h i |empty;
+i returns [String operations]: 
+h t
+{$operations=$h.operations+","+$t.operations;}|
+empty
+{$operations="";};
 
-h: statement;
+t returns[String operations]:
+i {$operations=$i.operations;};
 
-statement: left_hand_side| compound_statement| output_line| and identifier end_block| looping_statements;
+h returns [String operations]: 
+statement
+{$operations=$statement.operations;};
 
-output_line: 'DBMS_OUTPUT.PUT_LINE' semicolon_left identifier semicolon_right end_block {System.out.println($identifier.value);}
-| 'DBMS_OUTPUT.PUT' semicolon_left identifier semicolon_right end_block {System.out.print($identifier.value);}
-| 'DBMS_OUTPUT.NEW_LINE' end_block{System.out.println();};
+statement returns [String operations]: 
+left_hand_side
+{$operations=$left_hand_side.operations;}
+| compound_statement 
+{$operations=$compound_statement.operations;}
+| output_line
+{$operations=$output_line.operations;}
+| and identifier end_block 
+{$operations="AntlrOperator.userInput("+$identifier.value+")";}
+| looping_statements
+{$operations=$looping_statements.operations;};
 
-looping_statements: 'IF BEGIN' expression 'THEN' statement 'END IF' end_block| 'WHILE' expression 'LOOP' statement 'END LOOP' end_block;
+output_line returns [String operations]: 
+'DBMS_OUTPUT.PUT_LINE' semicolon_left identifier semicolon_right end_block 
+{$operations="System.out.print("+$identifier.value+",NEW_LINE)";}
+| 'DBMS_OUTPUT.PUT' semicolon_left identifier semicolon_right end_block 
+{$operations="System.out.print("+$identifier.value+")";}
+| 'DBMS_OUTPUT.NEW_LINE' end_block
+{$operations="System.out.print(NEW_LINE)";};
 
-left_hand_side: identifier equals right_hand_side;
 
-right_hand_side returns [String value, String overwrite]: expression{$value="vo";$overwrite="ow";}|string_literal{$value="vo";$overwrite="ow";}|single_char{$value="vo";$overwrite="ow";}|casting semicolon_left expression semicolon_right{$value="vo";$overwrite="ow";};
+  // ///////////////////////FIX THIS/////////////////////////////////////////
+looping_statements returns [String operations]: 
+'IF BEGIN' expression 'THEN' statement 'END IF' end_block
+{//if expression then do statement, otherwise don't do statement
+  boolean checker=true;
+  if(checker){
+    $operations=$statement.operations;
+  }
+  else{
+    $operations="";
+  }
+}
+| 'WHILE' expression 'LOOP' statement 'END LOOP' end_block
+{//while expression do statement
+  $operations="";
+  int temp=0;
+  while(temp<1){
+    $operations=$operations+$statement.operations;
+    temp++;
+  }
+};
 
-casting: data_type;
+left_hand_side returns [String operations]: 
+identifier equals right_hand_side
+{$operations="AntlrOperator.leftHandSideOperator("+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+")";};
 
-expression: a g;
+right_hand_side returns [String value, String OWtype, String OWsize]: 
+expression{$value=$expression.value;$OWtype="";$OWsize="";}
+|string_literal{$value=$string_literal.value;$OWtype="";$OWsize="";}
+|single_char{$value=$single_char.value;$OWtype="";$OWsize="";}
+|casting semicolon_left expression semicolon_right{$value=$expression.value;$OWtype=$casting.OWtype;$OWsize=$casting.OWsize;};
 
-g: relop a g| empty;
+casting returns [String OWtype, String OWsize]: 
+data_type {$OWtype=$data_type.type;$OWsize=$data_type.size;};
 
-a: c b;
 
-b: addop c b|empty;
+  // ///////////////////////FIX THIS/////////////////////////////////////////
+expression returns [String value]: 
+a g {$value="value";};
 
-c: pre_factor d;
+g: 
+relop a g 
+{System.out.println("\n\nRelop: "+$relop.symbol);}
+| empty;
 
-d: mulop pre_factor d| empty;
+a: 
+c b;
 
-pre_factor: 'NOT' pre_factor|factor; 
+b: 
+addop c b 
+{System.out.println("\n\nAddop: "+$addop.symbol);}
+|empty;
 
-factor: identifier|num|'TRUE'|'FALSE'|'NULL';
+c: 
+pre_factor d;
 
-empty: ();
+d: 
+mulop pre_factor d 
+{System.out.println("\n\nMulop: "+$mulop.symbol);}
+| empty;
+
+pre_factor returns [String value]: 
+'NOT' pre_factor 
+|factor
+{$value=$factor.value;}; 
+
+factor returns [String value]: 
+identifier {$value=$identifier.value;}
+|num {$value=$num.size;}
+|'TRUE'{$value="TRUE";}
+|'FALSE'{$value="FALSE";}
+|'NULL'{$value="NULL";};
+
+identifier returns [String value]: 
+('identifier') 
+{$value=cosc470.compiler.v3.database.Database.findID(idCount);idCount++;};
+
+num returns [String size]:
+('num') 
+{$size=cosc470.compiler.v3.database.Database.findNum(numCount);numCount++;} ;
+
+string_literal returns [String value]:
+('string_literal')
+{$value=cosc470.compiler.v3.database.Database.findStringLiteral(strCount);strCount++;};
+
+single_char returns [String value]:
+('c')
+{$value=cosc470.compiler.v3.database.Database.findChar(charCount);charCount++;};
+
+empty: 
+();
+
 end_program: ('\\');
-identifier returns [String value]: ('identifier') {$value=Database.findID(idCount);idCount++;};
-end_block: (';');
-equals: (':=');
-semicolon_left: ('(');
-num returns [String size]:('-')(('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')+){$size=$num.text;}|(('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9')+) {$size=$num.text;} ;
-semicolon_right: (')');
-and: ('&');
-string_literal returns [String value]: ('string_literal'){$value=Database.findStringLiteral(strCount);strCount++;};
-single_char returns [String value]:('c'){$value=Database.findChar(charCount);charCount++;};
-relop:('>'|'>='|'=='|'<='|'<'|'<>');
-addop:('+'|'-');
-mulop:('*'|'/'|'%');
+
+end_block: 
+(';');
+
+equals: 
+(':=');
+
+semicolon_left: 
+('(');
+
+semicolon_right: 
+(')');
+
+and: 
+('&');
+
+relop returns[String symbol]:
+('>'{$symbol = $relop.text;}
+|'>='{$symbol = $relop.text;}
+|'=='{$symbol = $relop.text;}
+|'<='{$symbol = $relop.text;}
+|'<'{$symbol = $relop.text;}
+|'<>'{$symbol = $relop.text;});
+
+addop returns[String symbol]:
+('+'{$symbol = $addop.text;}
+|'-'{$symbol = $addop.text;});
+
+mulop returns[String symbol]:
+('*'{$symbol = $mulop.text;}
+|'/'{$symbol = $mulop.text;}
+|'%'{$symbol = $mulop.text;});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

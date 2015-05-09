@@ -11,7 +11,7 @@ public class Database {
 			combinableWords, nonCombinableReserveWords, codeText, codeList;
 
 	private static ArrayList<cosc470.compiler.v3.database.Token> tokens;
-	
+
 	private static ArrayList<cosc470.compiler.v3.database.SymbolTableItem> symbolTable;
 
 	public Database() {
@@ -270,52 +270,67 @@ public class Database {
 		}
 		System.out.println("\n");
 	}
-	
-	public static String findID(int idCount){
-		String base="FAILURE";
-		int counter=-1;
+
+	public static String findID(int idCount) {
+		String base = "FAILURE";
+		int counter = -1;
 		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if(temp.getGrammarId().equals("identifier")){
+			if (temp.getGrammarId().equals("identifier")) {
 				counter++;
-				if(counter==idCount){
-					base=temp.getValue();
-				}
-			}
-		}
-		return base;
-	}
-	
-	public static String findStringLiteral(int strCount){
-		String base="FAILURE";
-		int counter=-1;
-		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if(temp.getGrammarId().equals("'string_literal'")){
-				counter++;
-				if(counter==strCount){
-					base=temp.getValue();
-				}
-			}
-		}
-		return base;
-	}
-	
-	public static String findChar(int charCount){
-		String base="FAILURE";
-		int counter=-1;
-		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if(temp.getGrammarId().equals("'c'")){
-				counter++;
-				if(counter==charCount){
-					base=temp.getValue();
+				if (counter == idCount) {
+					base = temp.getValue();
 				}
 			}
 		}
 		return base;
 	}
 
-	public static void addSymbolTableItem(String name, String type,String size, String value) {
+	public static String findStringLiteral(int strCount) {
+		String base = "FAILURE";
+		int counter = -1;
+		for (cosc470.compiler.v3.database.Token temp : tokens) {
+			if (temp.getGrammarId().equals("'string_literal'")) {
+				counter++;
+				if (counter == strCount) {
+					base = temp.getValue();
+				}
+			}
+		}
+		return base;
+	}
+
+	public static String findChar(int charCount) {
+		String base = "FAILURE";
+		int counter = -1;
+		for (cosc470.compiler.v3.database.Token temp : tokens) {
+			if (temp.getGrammarId().equals("'c'")) {
+				counter++;
+				if (counter == charCount) {
+					base = temp.getValue();
+				}
+			}
+		}
+		return base;
+	}
+
+	public static String findNum(int numCount) {
+		String base = "FAILURE";
+		int counter = -1;
+		for (cosc470.compiler.v3.database.Token temp : tokens) {
+			if (temp.getGrammarId().equals("num")) {
+				counter++;
+				if (counter == numCount) {
+					base = temp.getValue();
+				}
+			}
+		}
+		return base;
+	}
+
+	public static void addSymbolTableItem(String name, String type,
+			String size, String value) {
 		try {
-			symbolTable.add(new SymbolTableItem(name,type,size,value));
+			symbolTable.add(new SymbolTableItem(name, type, size, value));
 		} catch (Exception ex) {
 			System.out
 					.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n",
