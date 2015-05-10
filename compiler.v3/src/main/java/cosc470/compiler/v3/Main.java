@@ -28,9 +28,12 @@ public class Main {
 		
 		//
 		cosc470.compiler.v3.antlr.AntlrOperator antlrOperator = new cosc470.compiler.v3.antlr.AntlrOperator();
+		
+		//
+		cosc470.compiler.v3.antlr.AntlrEvaluator antlrEvaluator = new cosc470.compiler.v3.antlr.AntlrEvaluator();
 
 		// Print all program operations
-		database.printDatabaseAndProcesses();
+		//database.printDatabaseAndProcesses();
 		
 		//database.printAntlrCodeInput();		database.printExpressionList();		database.printAntlrOperationsList();
 		

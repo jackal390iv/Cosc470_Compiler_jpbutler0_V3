@@ -21,7 +21,9 @@ int numCount=0;
 }
 
 block: declarations compound_statement end_program
-{cosc470.compiler.v3.database.Database.setAntlrOperationsList($compound_statement.operations);};
+{cosc470.compiler.v3.database.Database.setAntlrOperationsList($compound_statement.operations);
+//AntlrOperator.evaluator($compound_statement.operations);
+};
 
 declarations: 'DECLARE' declare_rest|empty;
 
@@ -40,7 +42,7 @@ declare_rest: identifier type end_block declare_rest
     
   if(value.contains("Expression(")){
     value=value.substring((value.indexOf('(')+1),(value.indexOf(')'))).trim(); 
-    value=AntlrOperator.processExpression(value);   
+    value=AntlrEvaluator.processExpression(value);   
   } 
   
   //System.out.println("\n\nName: "+name+"\nType: "+type+"\nSize: "+size+"\nValue: "+value);
@@ -106,22 +108,22 @@ left_hand_side
 | output_line
 {$operations=$output_line.operations;}
 | and identifier end_block 
-{$operations="AntlrOperator.userInput("+$identifier.value+")";}
+{$operations=",AntlrOperator.userInput("+$identifier.value+")";}
 | looping_statements
 {$operations=$looping_statements.operations;};
 
 output_line returns [String operations]: 
 'DBMS_OUTPUT.PUT_LINE' semicolon_left identifier semicolon_right end_block 
-{$operations="System.out.print("+$identifier.value+",NEW_LINE)";}
+{$operations=",System.out.print_NEW_LINE("+$identifier.value+")";}
 | 'DBMS_OUTPUT.PUT' semicolon_left identifier semicolon_right end_block 
-{$operations="System.out.print("+$identifier.value+")";}
+{$operations=",System.out.print("+$identifier.value+")";}
 | 'DBMS_OUTPUT.NEW_LINE' end_block
-{$operations="System.out.print(NEW_LINE)";};
+{$operations=",System.out.print_NEW_LINE()";};
 
 looping_statements returns [String operations]: 
 'IF BEGIN' expression 'THEN' statement 'END IF' end_block
 {//if expression then do statement, otherwise don't do statement
-  $operations="IF("+$expression.value+")THEN("+$statement.operations+")";
+  $operations=",IF{"+$expression.value+",}THEN{"+$statement.operations+",}End";
   /*if($expression.value.equals("TRUE")){
     $operations=$statement.operations;
   }else{
@@ -130,7 +132,7 @@ looping_statements returns [String operations]:
 }
 | 'WHILE' expression 'LOOP' statement 'END LOOP' end_block
 {//while expression do statement
-  $operations="WHILE("+$expression.value+")Loop("+$statement.operations+")";
+  $operations=",WHILE{"+$expression.value+",}Loop{"+$statement.operations+",}End";
  /*if($expression.value.matches("-?\\d+(\\.\\d+)?")){
     int counter=0;
     while(counter<(Integer.parseInt($expression.value))){
@@ -145,7 +147,7 @@ looping_statements returns [String operations]:
 
 left_hand_side returns [String operations]: 
 identifier equals right_hand_side end_block
-{$operations="AntlrOperator.leftHandSideOperator("+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+")";};
+{$operations=",AntlrOperator.leftHandSideOperator("+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+")";};
 
 right_hand_side returns [String value, String OWtype, String OWsize]: 
 expression{$value=$expression.value;$OWtype="";$OWsize=$expression.OWsize;}
@@ -159,7 +161,7 @@ data_type {$OWtype=$data_type.type;$OWsize=$data_type.size;};
 expression returns [String value, String OWsize]: 
 a g 
 {
-$value="Expression("+$a.value+$g.value+")";
+$value=",Expression("+$a.value+$g.value+")";
 $OWsize="";
 };
 
