@@ -42,7 +42,7 @@ declare_rest: identifier type end_block declare_rest
     
   if(value.contains("Expression(")){
     value=value.substring((value.indexOf('(')+1),(value.indexOf(')'))).trim(); 
-    value=AntlrEvaluator.processExpression(value);   
+    value=AntlrOperator.processExpression(value);   
   } 
   
   //System.out.println("\n\nName: "+name+"\nType: "+type+"\nSize: "+size+"\nValue: "+value);
@@ -147,7 +147,7 @@ looping_statements returns [String operations]:
 
 left_hand_side returns [String operations]: 
 identifier equals right_hand_side end_block
-{$operations=",AntlrOperator.leftHandSideOperator("+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+")";};
+{$operations=",AntlrOperator.leftHandSideOperator{,"+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+",}";};
 
 right_hand_side returns [String value, String OWtype, String OWsize]: 
 expression{$value=$expression.value;$OWtype="";$OWsize=$expression.OWsize;}
