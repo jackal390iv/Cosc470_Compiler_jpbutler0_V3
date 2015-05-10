@@ -14,18 +14,60 @@ public class AntlrOperator {
 
 	private static List<String> evaluator;
 	private ArrayList<String> chest;
+	int kept = 0;
 
 	public AntlrOperator() {
 		runTest();
-		// cosc470.compiler.v3.database.Database.printAntlrOperationsList();
 		createEvaluator();
 		evaluateExpressions();
-		ifThenEndLoop();
-		whileLoop();
-		leftHandSideOperator(); // is this right spot????
-		printStatements();
-		// userInput(); //input and prints should be in order of occurrence!!!
-		 printEvaluator();
+		allOperations();
+	}
+
+	private void allOperations() {
+		while (!(evaluator.isEmpty())) {
+			allOperationsHelper();
+			checkTypes();
+		}
+	}
+
+	private void allOperationsHelper() {
+		boolean found = false;
+		for (int i = 0; i < evaluator.size(); i++) {
+			found = ifThenEndLoop(i);
+			if (found == true) {
+				break;
+			}
+
+			found = userInput(i);
+			if (found == true) {
+				break;
+			}
+			found = whileLoop(i);
+			if (found == true) {
+				break;
+			}
+			found = leftHandSideOperator(i);
+
+			if (found == true) {
+				break;
+			}
+			found = printStatements(i);
+			if (found == true) {
+				break;
+			}
+		}
+	}
+	
+	private void checkTypes(){
+		
+	}
+
+	private void printEvaluator() {
+		System.out.println("\n");
+		for (String temp : evaluator) {
+			System.out.println("" + temp);
+		}
+		System.out.println("\n");
 	}
 
 	private void runTest() {
@@ -218,177 +260,190 @@ public class AntlrOperator {
 		}
 	}
 
-	private void ifThenEndLoop() {
+	private boolean ifThenEndLoop(int i) {
+		boolean found = false;
 		int pacer, counter;
-		for (int i = 0; i < evaluator.size(); i++) {
-			if (evaluator.get(i).equals("IF{")) {
-				pacer = i;
-				counter = 0;
-				while (!(evaluator.get(pacer).equals("}End"))) {
-					counter++;
-					pacer++;
-				}
+		if (evaluator.get(i).equals("IF{")) {
+			found = true;
+			pacer = i;
+			counter = 0;
+			while (!(evaluator.get(pacer).equals("}End"))) {
 				counter++;
-				if (evaluator.get(i + 1).equals("TRUE")) {
-					evaluator.remove(pacer);
+				pacer++;
+			}
+			counter++;
+			if (evaluator.get(i + 1).equals("TRUE")) {
+				evaluator.remove(pacer);
+				evaluator.remove(i);
+				evaluator.remove(i);
+				evaluator.remove(i);
+			} else {
+				for (int k = 0; k < counter; k++) {
 					evaluator.remove(i);
-					evaluator.remove(i);
-					evaluator.remove(i);
-				} else {
-					for (int k = 0; k < counter; k++) {
-						evaluator.remove(i);
-					}
-					i = i - 1;
 				}
+				i = i - 1;
 			}
 		}
+		return found;
 	}
 
 	// fix accepted
-	private void whileLoop() {
-		int pacer, counter, keeper;
-		for (int i = 0; i < evaluator.size(); i++) {
-			if (evaluator.get(i).equals("WHILE{")) {
-				pacer = i;
-				counter = 0;
-				while (!(evaluator.get(pacer).equals("}End"))) {
-					counter++;
-					pacer++;
-				}
+	private boolean whileLoop(int i) {
+		boolean found = false, accepted;
+		int pacer, counter, keeper, block;
+		if (evaluator.get(i).equals("WHILE{")) {
+			found = true;
+			pacer = i;
+			counter = 0;
+			while (!(evaluator.get(pacer).equals("}End"))) {
 				counter++;
-				boolean accepted = true;
-				if (accepted == true) {
-					chest = new ArrayList<String>();
-					keeper = i + 3;
-					while (keeper < pacer) {
-						chest.add(evaluator.get(keeper));
-						keeper++;
-					}
-					keeper = 0;
-					while (keeper < counter) {
-						evaluator.remove(i);
-						keeper++;
-					}
+				pacer++;
+			}
+			counter++;
 
-					for (int j = 0; j < chest.size(); j++) {
-						evaluator.add(chest.get(j));
-					}
-
-				} else {
-					for (int k = 0; k < counter; k++) {
-						evaluator.remove(i);
-					}
-					i = i - 1;
+			accepted = false;
+			if (evaluator.get(i + 1).matches("-?\\d+(\\.\\d+)?")) {
+				if ((Integer.parseInt(evaluator.get(i + 1))) >= 0) {
+					accepted = true;
 				}
 			}
-		}
-	}
 
-	private void printEvaluator() {
-		System.out.println("\n");
-		for (String temp : evaluator) {
-			System.out.println("" + temp);
+			if (accepted == true) {
+				chest = new ArrayList<String>();
+				keeper = i + 3;
+				while (keeper < pacer) {
+					chest.add(evaluator.get(keeper));
+					keeper++;
+				}
+
+				pacer = Integer.parseInt(evaluator.get(i + 1));
+
+				keeper = 0;
+				while (keeper < counter) {
+					evaluator.remove(i);
+					keeper++;
+				}
+
+				for (int j = 0; j < pacer; j++) {
+					for (int k = 0; k < chest.size(); k++) {
+						evaluator.add(i, chest.get(k));
+					}
+				}
+
+			} else {
+				for (int k = 0; k < counter; k++) {
+					evaluator.remove(i);
+				}
+				i = i - 1;
+			}
 		}
-		System.out.println("\n");
+		return found;
 	}
 
 	// Will handle casting (DECLARE's casting has already been handled, only
 	// left_hand_side casting needed).
 	// identifier, value, OWtype, OWsize
-	private void leftHandSideOperator() {
+	private boolean leftHandSideOperator(int i) {
+		boolean found = false;
 		int pacer, counter;
-		for (int i = 0; i < evaluator.size(); i++) {
-			if (evaluator.get(i).equals("AntlrOperator.leftHandSideOperator{")) {
-				chest = new ArrayList<String>();
-				pacer = i;
-				counter = 0;
-				while (!(evaluator.get(pacer).equals("}"))) {
-					if (counter > 0) {
-						chest.add(evaluator.get(pacer));
-					}
-					counter++;
-					pacer++;
+		if (evaluator.get(i).equals("AntlrOperator.leftHandSideOperator{")) {
+			found = true;
+			chest = new ArrayList<String>();
+			pacer = i;
+			counter = 0;
+			while (!(evaluator.get(pacer).equals("}"))) {
+				if (counter > 0) {
+					chest.add(evaluator.get(pacer));
 				}
 				counter++;
-				for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
-					if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(chest.get(0))) {
-						cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setValue(chest.get(1));
+				pacer++;
+			}
+			counter++;
+			for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
+				if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(chest.get(0))) {
+					cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setValue(chest.get(1));
+					evaluator.remove(i);
+					evaluator.remove(i);
+					evaluator.remove(i);
+					evaluator.remove(i);
+					if (chest.size() > 1) {
+						cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setType(chest.get(2));
 						evaluator.remove(i);
-						evaluator.remove(i);
-						evaluator.remove(i);
-						evaluator.remove(i);
-						if (chest.size() > 1) {
-							cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setType(chest.get(2));
+						if (chest.size() > 2) {
+							cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setSize(chest.get(3));
 							evaluator.remove(i);
-							if (chest.size() > 2) {
-								cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setSize(chest.get(3));
-								evaluator.remove(i);
-							}
 						}
-						break;
 					}
+					break;
 				}
 			}
 		}
+		return found;
 	}
 
-	private void userInput() {
+	private boolean userInput(int i) {
+		boolean found = false;
 		String identifier = "";
-		for (int i = 0; i < evaluator.size(); i++) {
-			if (evaluator.get(i).contains("AntlrOperator.userInput(")) {
+		if (evaluator.get(i).contains("AntlrOperator.userInput(")) {
+			found = true;
+			identifier = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
 
-				identifier = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
+			// user input
+			Scanner scanner = new Scanner(System.in);
+			System.out.printf("\n\nPlease input new value for identifier %s: ", identifier);
+			String value = scanner.nextLine();
 
-				// user input
-				Scanner scanner = new Scanner(System.in);
-				System.out.printf("\n\nPlease input new value for identifier %s: ", identifier);
-				String value = scanner.nextLine();
+			// sets symbol table value
+			for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
+				if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(identifier)) {
+					cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setValue(value);
+					break;
+				}
+			}
+			evaluator.remove(i);
+			i = i - 1;
+		}
+		return found;
+	}
 
-				// sets symbol table value
+	private boolean printStatements(int i) {
+		boolean found = false;
+		String identifier = "", value = "";
+		if (evaluator.get(i).contains("System.out.print_NEW_LINE(")) {
+			// cosc470.compiler.v3.database.Database.printSymbolTableItems();
+			found = true;
+			identifier = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
+
+			if (!(identifier.equals(""))) {
 				for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
 					if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(identifier)) {
-						cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setValue(value);
+						identifier = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getValue();
 						break;
 					}
 				}
 			}
-		}
-	}
+			System.out.printf("\n%s", identifier);
+			evaluator.remove(i);
+			i = i - 1;
 
-	private void printStatements() {
-		String identifier = "", value = "";
-		for (int i = 0; i < evaluator.size(); i++) {
-			if (evaluator.get(i).contains("System.out.print_NEW_LINE(")) {
-				identifier = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
+		} else if (evaluator.get(i).contains("System.out.print(")) {
+			// cosc470.compiler.v3.database.Database.printSymbolTableItems();
+			found = true;
+			identifier = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
 
-				if (!(identifier.equals(""))) {
-					for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
-						if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(identifier)) {
-							identifier = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getValue();
-							break;
-						}
+			if (!(identifier.equals(""))) {
+				for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
+					if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(identifier)) {
+						identifier = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getValue();
+						break;
 					}
 				}
-				System.out.printf("\n%s", identifier);
-				evaluator.remove(i);
-				i = i - 1;
-
-			} else if (evaluator.get(i).contains("System.out.print(")) {
-				identifier = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
-
-				if (!(identifier.equals(""))) {
-					for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
-						if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(identifier)) {
-							identifier = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getValue();
-							break;
-						}
-					}
-				}
-				System.out.printf("%s", identifier);
-				evaluator.remove(i);
-				i = i - 1;
 			}
+			System.out.printf("%s", identifier);
+			evaluator.remove(i);
+			i = i - 1;
 		}
+		return found;
 
 	}
 

@@ -22,24 +22,28 @@ BEGIN
 	
 	--& my_char;														-- will ask user to input a value to overwrite my_chars current value, must be in the form 'character' 
 	
-	--& my_var;														-- will ask user to input a value to overwrite my_var current value, must be in the form 'string' 
+	--& my_var;														-- will ask user to input a value to overwrite my_var current value, must be in the form 'string' 	
+
+	IF BEGIN my_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;			-- will print my_bool
 	
 	--& my_positive_int;												-- will ask user to input a value to overwrite my_positive_int current value, must be a positive number 
 	
-	IF BEGIN my_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;			-- will print my_bool
+	DBMS_OUTPUT.PUT_LINE(my_positive_int);							-- will print the new value that the user has assigned to my_positive_int
 	
 	IF BEGIN NOTmy_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;		-- will not print my_bool, as value has been changed to 'FALSE'
 	
-	IF BEGIN my_num THEN DBMS_OUTPUT.PUT(my_bool); END IF;			-- will not print my_bool, as integer is not accepted for if/the/end loop
+	IF BEGIN my_num THEN DBMS_OUTPUT.PUT(my_num); END IF;			-- will not print my_bool, as integer is not accepted for if/the/end loop
 	
 	DBMS_OUTPUT.NEW_LINE;											-- will move print to new line
 	
 	WHILE my_num-1 LOOP DBMS_OUTPUT.PUT_LINE(my_num); END LOOP;		-- will print my_int twice, as 3-1=2
 	
-	my_num := SMALLINT (8) (my_small_int + my_positive_int);						-- will overwrite the value of my_num to the value of my_small_int + my_positive_int
+	my_num := SMALLINT (8) (my_small_int + 5);						-- will overwrite the value of my_num to the value of my_small_int + my_positive_int, as -5
 	
-	DBMS_OUTPUT.PUT_LINE(my_num);									-- will print the new value of my_num
-	
+	DBMS_OUTPUT.PUT_LINE(my_num);									-- will print the new value of my_num	
 	
 		
 END;\
+
+
+
