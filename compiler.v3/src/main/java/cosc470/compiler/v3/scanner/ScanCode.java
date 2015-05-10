@@ -156,10 +156,12 @@ public class ScanCode {
                     }
                 }
             }
+
         } catch (Exception ex) {
             //System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(), ex.getMessage(), ex.getLocalizedMessage());
             //ex.printStackTrace();
         }
+        
     }
 
     private void removeEmptyElements() {

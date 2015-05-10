@@ -16,7 +16,11 @@ public class SyntaxChecker {
 
 	public SyntaxChecker() {
 		elements = new ArrayList<String>();
-		combineStringLiterals();
+
+        //cosc470.compiler.v3.database.Database.printCodeList();
+		//combineStringLiterals();
+		//cosc470.compiler.v3.database.Database.printCodeList();
+		
 		createTokens();
 		checkIdentifiers();
 		setSizeDefaults();
@@ -95,9 +99,11 @@ public class SyntaxChecker {
 		try {
 			if ((code.startsWith("'")) && (code.endsWith("'"))) {
 				if (code.length() == 3) {
+					//grammarId = "identifier";
 					grammarId = "single_char";
 				} else {
-					grammarId = "'string_literal";
+					//grammarId = "identifier";
+					grammarId = "string_literal";
 				}
 			} else if (code.matches("-?\\d+(\\.\\d+)?")) {
 				grammarId = "num";

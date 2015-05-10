@@ -73,7 +73,8 @@ numbers returns [String type,String size]:
 | 'POSITIVE' size_mis{$type="POSITIVE";$size=$size_mis.size;if($size==""){$size="3";}};
 
 size_mis returns [String size]: 
-semicolon_left num semicolon_right {$size=$num.size;};
+semicolon_left num semicolon_right {$size=$num.size;}
+|empty {$size="";};
 
 compound_statement returns [String operations]: 
 'BEGIN' optional_statements 'END' end_block

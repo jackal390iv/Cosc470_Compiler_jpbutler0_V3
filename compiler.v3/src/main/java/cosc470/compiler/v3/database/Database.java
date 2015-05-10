@@ -6,7 +6,7 @@ public class Database {
 
 	private static String commentSymbol, commentBlockStartSymbol, commentBlockEndSymbol, antlrCodeInput, antlrOperationsList;
 
-	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList, expressionList;
+	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList, expressionList, executionList,evaluatorList;
 
 	private static ArrayList<cosc470.compiler.v3.database.Token> tokens;
 
@@ -26,6 +26,8 @@ public class Database {
 		tokens = new ArrayList<cosc470.compiler.v3.database.Token>();
 		symbolTable = new ArrayList<cosc470.compiler.v3.database.SymbolTableItem>();
 		expressionList = new ArrayList<String>();
+		executionList= new ArrayList<String>();
+		evaluatorList= new ArrayList<String>();
 	}
 
 	public static void setCommentSymbol(String symbol) {
@@ -314,6 +316,36 @@ public class Database {
 	public static void printAntlrOperationsList() {
 		System.out.printf("\n\nAntlr Operations: \n%s\n\n", antlrOperationsList);
 	}
+	
+	public static void addEvaluatorListItem(String evaluator){
+		evaluatorList.add(evaluator);
+	}
+	
+	public static ArrayList<String> getEvaluatorList(){
+		return evaluatorList;
+	}
+	
+	public static void printEvaluatorList(){
+		int counter=0;
+		System.out.printf("\n\nEvaluator List:\n");
+		for (String temp : evaluatorList) {
+			System.out.printf("%-3d: %s\n",counter,temp);
+			counter++;
+		}
+		System.out.println("\n");
+	}
+	
+	public static ArrayList<String> getExecutionList(){
+		return executionList;
+	}
+	
+	public static void printExecutionList(){
+		System.out.printf("\n\nExecution:\n");
+		for (String temp : executionList) {
+			System.out.println(temp);
+		}
+		System.out.println("\n");
+	}
 
 	public static void printDatabaseAndProcesses() {
 		System.out.printf("\n\nDatabase And Processes:");
@@ -327,8 +359,9 @@ public class Database {
 		printTokens();
 		printSymbolTableItems();
 		printAntlrCodeInput();
-		printAntlrOperationsList();
+		printEvaluatorList();
 		printExpressionList();
+		printExecutionList();
 	}
 
 }

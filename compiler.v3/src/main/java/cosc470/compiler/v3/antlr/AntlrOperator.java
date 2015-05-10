@@ -15,6 +15,7 @@ public class AntlrOperator {
 	private static List<String> evaluator;
 	private ArrayList<String> chest;
 	int kept = 0;
+	String evalList = "";
 
 	public AntlrOperator() {
 		runTest();
@@ -25,9 +26,83 @@ public class AntlrOperator {
 
 	private void allOperations() {
 		while (!(evaluator.isEmpty())) {
+			setEvaluator();
+			checkTypes();
 			allOperationsHelper();
 			checkTypes();
 		}
+	}
+
+	private void printEvaluator() {
+		for (String temp : evaluator) {
+			System.out.println(temp);
+		}
+		System.out.println("\n\n");
+	}
+
+	private void setEvaluator() {
+		evalList = "";
+		for (String temp : evaluator) {
+			evalList = evalList + temp + ",";
+		}
+		cosc470.compiler.v3.database.Database.addEvaluatorListItem(evalList);
+		// System.out.println("\n"+evalList);
+	}
+
+	private void checkTypes() {
+		String name = "", type = "", value = "";
+		int size = 0;
+
+		for (int i = 0; i < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); i++) {
+			name = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getName();
+			type = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getType();
+			value = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getValue();
+			if (!(cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getSize().matches("[0-9]*"))) {
+				System.out.printf("ERROR: Variable %s size has not been correctly set.", name);
+				System.exit(0);
+			}
+			cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).setSize(Integer.toString(value.length()));
+			size = Integer.parseInt(cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getSize());
+			if (!(value.equals(""))) {
+				if (type.equals("NUMBER")) {
+					if (!(value.matches("-?\\d+(\\.\\d+)?"))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("POSITIVE")) {
+					if (!(value.matches("\\d+(\\.\\d+)?"))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("SMALLINT")) {
+					if (!(value.matches("-?\\d+(\\.\\d+)?"))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					} else if (!((Integer.parseInt(value)) <= 32767)) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					} else if (!((Integer.parseInt(value)) >= -32768)) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("BOOLEAN")) {
+					if (!((value.equals("TRUE")) || (value.equals("FALSE")))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("CHAR")) {
+					if (!(value.length() == 3)) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					} else if (!((value.startsWith("'")) && (value.endsWith("'")))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				}
+
+			}
+		}
+
 	}
 
 	private void allOperationsHelper() {
@@ -57,18 +132,6 @@ public class AntlrOperator {
 			}
 		}
 	}
-	
-	private void checkTypes(){
-		
-	}
-
-	private void printEvaluator() {
-		System.out.println("\n");
-		for (String temp : evaluator) {
-			System.out.println("" + temp);
-		}
-		System.out.println("\n");
-	}
 
 	private void runTest() {
 		try {
@@ -83,9 +146,9 @@ public class AntlrOperator {
 			// cosc470.compiler.v3.database.Database.printAntlrCodeInput();
 
 			CharStream charStream = new ANTLRStringStream(code);
-			GrammarV3Lexer lexer = new GrammarV3Lexer(charStream);
+			GrammarV3LexerBackup lexer = new GrammarV3LexerBackup(charStream);
 			TokenStream tokenStream = new CommonTokenStream(lexer);
-			GrammarV3Parser parser = new GrammarV3Parser(tokenStream);
+			GrammarV3ParserBackup parser = new GrammarV3ParserBackup(tokenStream);
 			parser.block();
 
 		} catch (Exception ex) {
@@ -226,13 +289,13 @@ public class AntlrOperator {
 	private void createEvaluator() {
 		try {
 			String holder = "";
+			cosc470.compiler.v3.database.Database.addEvaluatorListItem(cosc470.compiler.v3.database.Database.getAntlrOperationsList());
 			evaluator = new ArrayList<String>(Arrays.asList(cosc470.compiler.v3.database.Database.getAntlrOperationsList().split(",")));
-			// evaluator = new
-			// ArrayList<String>(Arrays.asList(value.split(",")));
 
 			for (int i = 0; i < evaluator.size(); i++) {
-				if (evaluator.get(i).isEmpty()) {
+				if (evaluator.get(i).trim().equals("")) {
 					evaluator.remove(i);
+					i = i - 1;
 				} else {
 					holder = evaluator.get(i).trim();
 					evaluator.remove(i);
@@ -344,6 +407,7 @@ public class AntlrOperator {
 	// left_hand_side casting needed).
 	// identifier, value, OWtype, OWsize
 	private boolean leftHandSideOperator(int i) {
+		// printEvaluator();
 		boolean found = false;
 		int pacer, counter;
 		if (evaluator.get(i).equals("AntlrOperator.leftHandSideOperator{")) {
@@ -366,10 +430,10 @@ public class AntlrOperator {
 					evaluator.remove(i);
 					evaluator.remove(i);
 					evaluator.remove(i);
-					if (chest.size() > 1) {
+					if (chest.size() > 2) {
 						cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setType(chest.get(2));
 						evaluator.remove(i);
-						if (chest.size() > 2) {
+						if (chest.size() > 3) {
 							cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).setSize(chest.get(3));
 							evaluator.remove(i);
 						}
@@ -409,6 +473,7 @@ public class AntlrOperator {
 	private boolean printStatements(int i) {
 		boolean found = false;
 		String identifier = "", value = "";
+		int theSize = 0;
 		if (evaluator.get(i).contains("System.out.print_NEW_LINE(")) {
 			// cosc470.compiler.v3.database.Database.printSymbolTableItems();
 			found = true;
@@ -422,7 +487,8 @@ public class AntlrOperator {
 					}
 				}
 			}
-			System.out.printf("\n%s", identifier);
+			cosc470.compiler.v3.database.Database.getExecutionList().add(identifier);
+			// System.out.printf("\n%s", identifier);
 			evaluator.remove(i);
 			i = i - 1;
 
@@ -439,7 +505,17 @@ public class AntlrOperator {
 					}
 				}
 			}
-			System.out.printf("%s", identifier);
+			if (!(cosc470.compiler.v3.database.Database.getExecutionList().isEmpty())) {
+				theSize = cosc470.compiler.v3.database.Database.getExecutionList().size();
+				theSize--;
+				value = cosc470.compiler.v3.database.Database.getExecutionList().get(theSize);
+				cosc470.compiler.v3.database.Database.getExecutionList().remove(theSize);
+				value = value + identifier;
+				cosc470.compiler.v3.database.Database.getExecutionList().add(value);
+			} else {
+				cosc470.compiler.v3.database.Database.getExecutionList().add(identifier);
+			}
+			// System.out.printf("%s", identifier);
 			evaluator.remove(i);
 			i = i - 1;
 		}
@@ -481,15 +557,36 @@ public class AntlrOperator {
 				}
 			}
 
-			// for (String temp : expressionSplit) {
-			// System.out.print(temp); } System.out.println("\n");
+			String kepter = "";
+			for (int i = 0; i < expressionSplit.size(); i++) {
+				if (expressionSplit.get(i).equals("-")) {
+					if (expressionSplit.get(i + 1).matches("\\d+(\\.\\d+)?")) {
+						if (i != 0) {
+							if ((expressionSplit.get(i - 1).equals("*")) || (expressionSplit.get(i - 1).equals("/")) || (expressionSplit.get(i - 1).equals("%"))
+									|| (expressionSplit.get(i - 1).equals("-")) || (expressionSplit.get(i - 1).equals("+")) || (expressionSplit.get(i - 1).equals("<"))
+									|| (expressionSplit.get(i - 1).equals("<=")) || (expressionSplit.get(i - 1).equals(">")) || (expressionSplit.get(i - 1).equals(">="))
+									|| (expressionSplit.get(i - 1).equals("==")) || (expressionSplit.get(i - 1).equals("<>"))) {
+								kepter = "-" + expressionSplit.get(i + 1);
+								expressionSplit.remove(i);
+								expressionSplit.remove(i);
+								expressionSplit.add(i, kepter);
+							}
+						} else {
+							kepter = "-" + expressionSplit.get(i + 1);
+							expressionSplit.remove(i);
+							expressionSplit.remove(i);
+							expressionSplit.add(i, kepter);
+						}
+					}
+				}
+			}
 
 			while (counter < expressionSplit.size() - 1) {
 				operation = false;
 				for (int i = 0; i < expressionSplit.size() - 1; i++) {
 					if (operation == false) {
 						if (expressionSplit.get(i + 1).equals("%")) {
-							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+							if ((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")))) {
 								a = Integer.parseInt(expressionSplit.get(i));
 								b = Integer.parseInt(expressionSplit.get(i + 2));
 								answer = a % b;
@@ -507,7 +604,7 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("*")) {
-							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+							if ((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")))) {
 								a = Integer.parseInt(expressionSplit.get(i));
 								b = Integer.parseInt(expressionSplit.get(i + 2));
 								answer = a * b;
@@ -525,7 +622,7 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("/")) {
-							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+							if ((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")))) {
 								a = Integer.parseInt(expressionSplit.get(i));
 								b = Integer.parseInt(expressionSplit.get(i + 2));
 								answer = a / b;
@@ -555,7 +652,7 @@ public class AntlrOperator {
 				for (int i = 0; i < expressionSplit.size() - 1; i++) {
 					if (operation == false) {
 						if (expressionSplit.get(i + 1).equals("+")) {
-							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+							if ((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")))) {
 								a = Integer.parseInt(expressionSplit.get(i));
 								b = Integer.parseInt(expressionSplit.get(i + 2));
 								answer = a + b;
@@ -573,7 +670,7 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("-")) {
-							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+							if ((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")))) {
 								a = Integer.parseInt(expressionSplit.get(i));
 								b = Integer.parseInt(expressionSplit.get(i + 2));
 								answer = a - b;
@@ -603,8 +700,8 @@ public class AntlrOperator {
 				for (int i = 0; i < expressionSplit.size() - 1; i++) {
 					if (operation == false) {
 						if (expressionSplit.get(i + 1).equals("<")) {
-							if (expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) {
-								if (expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")) {
+							if (expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) {
+								if (expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")) {
 									a = Integer.parseInt(expressionSplit.get(i));
 									b = Integer.parseInt(expressionSplit.get(i + 2));
 									if (a < b) {
@@ -628,8 +725,8 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals(">")) {
-							if (expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) {
-								if (expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")) {
+							if (expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) {
+								if (expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")) {
 									a = Integer.parseInt(expressionSplit.get(i));
 									b = Integer.parseInt(expressionSplit.get(i + 2));
 									if (a > b) {
@@ -653,8 +750,8 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("<=")) {
-							if (expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) {
-								if (expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")) {
+							if (expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) {
+								if (expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")) {
 									a = Integer.parseInt(expressionSplit.get(i));
 									b = Integer.parseInt(expressionSplit.get(i + 2));
 									if (a <= b) {
@@ -678,8 +775,8 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals(">=")) {
-							if (expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) {
-								if (expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")) {
+							if (expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) {
+								if (expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")) {
 									a = Integer.parseInt(expressionSplit.get(i));
 									b = Integer.parseInt(expressionSplit.get(i + 2));
 									if (a >= b) {
@@ -703,8 +800,8 @@ public class AntlrOperator {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("==")) {
-							if (expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) {
-								if (expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")) {
+							if (expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?")) {
+								if (expressionSplit.get(i + 2).matches("-?\\d+(\\.\\d+)?")) {
 									a = Integer.parseInt(expressionSplit.get(i));
 									b = Integer.parseInt(expressionSplit.get(i + 2));
 									if (a == b) {
