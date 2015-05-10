@@ -95,9 +95,9 @@ public class SyntaxChecker {
 		try {
 			if ((code.startsWith("'")) && (code.endsWith("'"))) {
 				if (code.length() == 3) {
-					grammarId = "'c'";
+					grammarId = "single_char";
 				} else {
-					grammarId = "'string_literal'";
+					grammarId = "'string_literal";
 				}
 			} else if (code.matches("-?\\d+(\\.\\d+)?")) {
 				grammarId = "num";

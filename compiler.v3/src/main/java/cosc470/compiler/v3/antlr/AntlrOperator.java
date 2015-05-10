@@ -27,6 +27,8 @@ public class AntlrOperator {
 
 			cosc470.compiler.v3.database.Database.setAntlrCodeInput(code);
 
+			cosc470.compiler.v3.database.Database.printAntlrCodeInput();
+
 			CharStream charStream = new ANTLRStringStream(code);
 			GrammarV3Lexer lexer = new GrammarV3Lexer(charStream);
 			TokenStream tokenStream = new CommonTokenStream(lexer);
@@ -81,10 +83,122 @@ public class AntlrOperator {
 		return temp;
 	}
 
+	public static String findID(int idCount) {
+		String base = "FAILURE";
+		try {
+			boolean afterDeclare = false;
+			int counter = -1;
+			for (cosc470.compiler.v3.database.Token temp : cosc470.compiler.v3.database.Database.getTokens()) {
+				if (temp.getGrammarId().equals("identifier")) {
+					counter++;
+					if ((counter == idCount) && (afterDeclare == false)) {
+						base = temp.getValue();
+					} else if ((counter == idCount) && (afterDeclare == true)) {
+						for (int i = 0; i < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); i++) {
+							if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getName().equals(temp.getValue())) {
+								base = temp.getValue();
+							}
+						}
+					}
+				} else if (temp.getGrammarId().equals("BEGIN")) {
+					afterDeclare = true;
+				}
+			}
+			if (base.equals("FAILURE")) {
+				System.out.println("ERROR: Identifier could not be found");
+				System.exit(0);
+			}
+		} catch (Exception ex) {
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
+			// ex.printStackTrace();
+			System.exit(0);
+		}
+		return base;
+	}
+
+	public static String findStringLiteral(int strCount) {
+		String base = "FAILURE";
+		try {
+			int counter = -1;
+			for (cosc470.compiler.v3.database.Token temp : cosc470.compiler.v3.database.Database.getTokens()) {
+				if (temp.getGrammarId().equals("string_literal")) {
+					counter++;
+					if (counter == strCount) {
+						base = temp.getValue();
+					}
+				}
+			}
+			if (base.equals("FAILURE")) {
+				System.out.println("ERROR: String literal ('string_literal') could not be found");
+				System.exit(0);
+			}
+		} catch (Exception ex) {
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
+			// ex.printStackTrace();
+			System.exit(0);
+		}
+		return base;
+	}
+
+	public static String findChar(int charCount) {
+		String base = "FAILURE";
+		try {
+			int counter = -1;
+			for (cosc470.compiler.v3.database.Token temp : cosc470.compiler.v3.database.Database.getTokens()) {
+				if (temp.getGrammarId().equals("single_char")) {
+					counter++;
+					if (counter == charCount) {
+						base = temp.getValue();
+					}
+				}
+			}
+			if (base.equals("FAILURE")) {
+				System.out.println("ERROR: Char ('c') could not be found");
+				System.exit(0);
+			}
+		} catch (Exception ex) {
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
+			// ex.printStackTrace();
+			System.exit(0);
+		}
+		return base;
+	}
+
+	public static String findNum(int numCount) {
+		String base = "FAILURE";
+		try {
+			int counter = -1;
+			for (cosc470.compiler.v3.database.Token temp : cosc470.compiler.v3.database.Database.getTokens()) {
+				if (temp.getGrammarId().equals("num")) {
+					counter++;
+					if (counter == numCount) {
+						base = temp.getValue();
+					}
+				}
+			}
+			if (base.equals("FAILURE")) {
+				System.out.println("ERROR: Number could not be found");
+				System.exit(0);
+			}
+		} catch (Exception ex) {
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
+			// ex.printStackTrace();
+			System.exit(0);
+		}
+		return base;
+	}
+
 	public static String processExpression(String expression) {
 		try {
 			List<String> expressionSplit = new ArrayList<String>(Arrays.asList(expression.split("(?<=[-,+,*,/,%,<,>,=])|(?=[-,+,*,/,%,<,>,=])")));
-			List<String> solver = new ArrayList<String>();
+			String holder = "", op1 = "", op2 = "";
+			int a = 0, b = 0, answer = 0;
+			boolean operation = false;
+			int counter = 0;
 
 			for (int i = 0; i < expressionSplit.size(); i++) {
 				if (expressionSplit.get(i).equals("<")) {
@@ -112,47 +226,62 @@ public class AntlrOperator {
 				}
 			}
 
-			int a = 0, b = 0, answer = 0;
-			boolean operation = false;
-			int counter = 0;
+			// for (String temp : expressionSplit) {
+			// System.out.print(temp); } System.out.println("\n");
+
 			while (counter < expressionSplit.size() - 1) {
 				operation = false;
 				for (int i = 0; i < expressionSplit.size() - 1; i++) {
 					if (operation == false) {
 						if (expressionSplit.get(i + 1).equals("%")) {
-							a = Integer.parseInt(expressionSplit.get(i));
-							b = Integer.parseInt(expressionSplit.get(i + 2));
-							answer = a % b;
+							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+								a = Integer.parseInt(expressionSplit.get(i));
+								b = Integer.parseInt(expressionSplit.get(i + 2));
+								answer = a % b;
+								holder = Integer.toString(answer);
+							} else {
+								holder = "NULL";
+							}
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
-							expressionSplit.add(i, (Integer.toString(answer)));
+							expressionSplit.add(i, holder);
 							operation = true;
 							/*
 							 * for (String temp : expressionSplit) {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("*")) {
-							a = Integer.parseInt(expressionSplit.get(i));
-							b = Integer.parseInt(expressionSplit.get(i + 2));
-							answer = a * b;
+							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+								a = Integer.parseInt(expressionSplit.get(i));
+								b = Integer.parseInt(expressionSplit.get(i + 2));
+								answer = a * b;
+								holder = Integer.toString(answer);
+							} else {
+								holder = "NULL";
+							}
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
-							expressionSplit.add(i, (Integer.toString(answer)));
+							expressionSplit.add(i, holder);
 							operation = true;
 							/*
 							 * for (String temp : expressionSplit) {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("/")) {
-							a = Integer.parseInt(expressionSplit.get(i));
-							b = Integer.parseInt(expressionSplit.get(i + 2));
-							answer = a / b;
+							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+								a = Integer.parseInt(expressionSplit.get(i));
+								b = Integer.parseInt(expressionSplit.get(i + 2));
+								answer = a / b;
+								holder = Integer.toString(answer);
+							} else {
+								holder = "NULL";
+							}
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
-							expressionSplit.add(i, (Integer.toString(answer)));
+							expressionSplit.add(i, holder);
 							operation = true;
 							/*
 							 * for (String temp : expressionSplit) {
@@ -171,26 +300,36 @@ public class AntlrOperator {
 				for (int i = 0; i < expressionSplit.size() - 1; i++) {
 					if (operation == false) {
 						if (expressionSplit.get(i + 1).equals("+")) {
-							a = Integer.parseInt(expressionSplit.get(i));
-							b = Integer.parseInt(expressionSplit.get(i + 2));
-							answer = a + b;
+							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+								a = Integer.parseInt(expressionSplit.get(i));
+								b = Integer.parseInt(expressionSplit.get(i + 2));
+								answer = a + b;
+								holder = Integer.toString(answer);
+							} else {
+								holder = "NULL";
+							}
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
-							expressionSplit.add(i, (Integer.toString(answer)));
+							expressionSplit.add(i, holder);
 							operation = true;
 							/*
 							 * for (String temp : expressionSplit) {
 							 * System.out.print(temp); } System.out.println();//
 							 */
 						} else if (expressionSplit.get(i + 1).equals("-")) {
-							a = Integer.parseInt(expressionSplit.get(i));
-							b = Integer.parseInt(expressionSplit.get(i + 2));
-							answer = a - b;
+							if ((expressionSplit.get(i).matches("\\d+(\\.\\d+)?")) && ((expressionSplit.get(i + 2).matches("\\d+(\\.\\d+)?")))) {
+								a = Integer.parseInt(expressionSplit.get(i));
+								b = Integer.parseInt(expressionSplit.get(i + 2));
+								answer = a - b;
+								holder = Integer.toString(answer);
+							} else {
+								holder = "NULL";
+							}
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
 							expressionSplit.remove(i);
-							expressionSplit.add(i, (Integer.toString(answer)));
+							expressionSplit.add(i, holder);
 							operation = true;
 							/*
 							 * for (String temp : expressionSplit) {
@@ -203,7 +342,6 @@ public class AntlrOperator {
 				}
 			}
 
-			String holder = "", op1 = "", op2 = "";
 			counter = 0;
 			while (counter < expressionSplit.size() - 1) {
 				operation = false;
@@ -347,12 +485,18 @@ public class AntlrOperator {
 				}
 			}
 
-			System.out.println("Expression: " + expression);
-			System.out.print("Answer: ");
+			cosc470.compiler.v3.database.Database.addExpressionListItem("Expression: " + expression);
+			holder = "";
 			for (String temp : expressionSplit) {
-				System.out.print(temp);
+				holder = holder + temp;
 			}
-			System.out.println("\n\n");// */
+			holder = "Answer: " + holder;
+			cosc470.compiler.v3.database.Database.addExpressionListItem(holder);
+
+			expression = "";
+			for (String temp : expressionSplit) {
+				expression = expression + temp;
+			}
 
 		} catch (Exception ex) {
 			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
@@ -367,7 +511,6 @@ public class AntlrOperator {
 
 	public static void evaluator() {
 		try {
-			System.out.println("Evaluator: " + cosc470.compiler.v3.database.Database.getAntlrOperationsList());
 
 		} catch (Exception ex) {
 			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),

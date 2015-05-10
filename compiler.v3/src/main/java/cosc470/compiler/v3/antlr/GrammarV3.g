@@ -31,12 +31,19 @@ declare_rest: identifier type end_block declare_rest
   name=$identifier.value;
   type= $type.type;
   size=$type.size;
-  value=$type.value;
-   
-  if(!($type.OWtype.equals(""))){
+  value=$type.value;    
+
+ if(!($type.OWtype.equals(""))){
     type=$type.OWtype;
     size=$type.OWsize;
   }
+    
+  if(value.contains("Expression(")){
+    value=value.substring((value.indexOf('(')+1),(value.indexOf(')'))).trim(); 
+    value=AntlrOperator.processExpression(value);   
+  } 
+  
+  //System.out.println("\n\nName: "+name+"\nType: "+type+"\nSize: "+size+"\nValue: "+value);
   
   cosc470.compiler.v3.database.Database.addSymbolTableItem(name,type,size,value);
   
@@ -111,31 +118,33 @@ output_line returns [String operations]:
 | 'DBMS_OUTPUT.NEW_LINE' end_block
 {$operations="System.out.print(NEW_LINE)";};
 
-
-  // ///////////////////////FIX THIS/////////////////////////////////////////
 looping_statements returns [String operations]: 
 'IF BEGIN' expression 'THEN' statement 'END IF' end_block
 {//if expression then do statement, otherwise don't do statement
-  boolean checker=true;
-  if(checker){
+  $operations="IF("+$expression.value+")THEN("+$statement.operations+")";
+  /*if($expression.value.equals("TRUE")){
     $operations=$statement.operations;
-  }
-  else{
+  }else{
     $operations="";
-  }
+  }*/
 }
 | 'WHILE' expression 'LOOP' statement 'END LOOP' end_block
 {//while expression do statement
-  $operations="";
-  int temp=0;
-  while(temp<1){
-    $operations=$operations+$statement.operations;
-    temp++;
+  $operations="WHILE("+$expression.value+")Loop("+$statement.operations+")";
+ /*if($expression.value.matches("-?\\d+(\\.\\d+)?")){
+    int counter=0;
+    while(counter<(Integer.parseInt($expression.value))){
+      $operations=$operations+$statement.operations;
+      counter++;
+      } 
+  } else{
+    $operations="";
   }
+  */
 };
 
 left_hand_side returns [String operations]: 
-identifier equals right_hand_side
+identifier equals right_hand_side end_block
 {$operations="AntlrOperator.leftHandSideOperator("+$identifier.value+","+ $right_hand_side.value+","+ $right_hand_side.OWtype+","+$right_hand_side.OWsize+")";};
 
 right_hand_side returns [String value, String OWtype, String OWsize]: 
@@ -149,13 +158,9 @@ data_type {$OWtype=$data_type.type;$OWsize=$data_type.size;};
 
 expression returns [String value, String OWsize]: 
 a g 
-{$value="";
-$value=AntlrOperator.processExpression($a.value+$g.value);
- if($value.matches("-?\\d+(\\.\\d+)?")){
-  $OWsize=$value;
- }else{
-  $OWsize="";
-}
+{
+$value="Expression("+$a.value+$g.value+")";
+$OWsize="";
 };
 
 g returns [String value]: 
@@ -235,19 +240,23 @@ identifier {$value=AntlrOperator.getSymbolTableValue_byName($identifier.value);}
 
 identifier returns [String value]: 
 ('identifier') 
-{$value=cosc470.compiler.v3.database.Database.findID(idCount);idCount++;};
+{$value=AntlrOperator.findID(idCount);idCount++;};
 
 num returns [String size]:
-('num') 
-{$size=cosc470.compiler.v3.database.Database.findNum(numCount);numCount++;} ;
+'num' 
+{$size=AntlrOperator.findNum(numCount);numCount++;} |
+negative 'num' 
+{$size=$negative.value+AntlrOperator.findNum(numCount);numCount++;};
+
+negative returns [String value]: ('-') {$value=$negative.text;};
 
 string_literal returns [String value]:
 ('string_literal')
-{$value=cosc470.compiler.v3.database.Database.findStringLiteral(strCount);strCount++;};
+{$value=AntlrOperator.findStringLiteral(strCount);strCount++;};
 
 single_char returns [String value]:
-('c')
-{$value=cosc470.compiler.v3.database.Database.findChar(charCount);charCount++;};
+('single_char')
+{$value=AntlrOperator.findChar(charCount);charCount++;};
 
 empty: 
 ();

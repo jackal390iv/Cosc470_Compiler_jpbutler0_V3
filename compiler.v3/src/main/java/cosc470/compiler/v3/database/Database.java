@@ -6,7 +6,7 @@ public class Database {
 
 	private static String commentSymbol, commentBlockStartSymbol, commentBlockEndSymbol, antlrCodeInput, antlrOperationsList;
 
-	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList;
+	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList, expressionList;
 
 	private static ArrayList<cosc470.compiler.v3.database.Token> tokens;
 
@@ -25,6 +25,7 @@ public class Database {
 		codeList = new ArrayList<String>();
 		tokens = new ArrayList<cosc470.compiler.v3.database.Token>();
 		symbolTable = new ArrayList<cosc470.compiler.v3.database.SymbolTableItem>();
+		expressionList = new ArrayList<String>();
 	}
 
 	public static void setCommentSymbol(String symbol) {
@@ -250,62 +251,7 @@ public class Database {
 		System.out.println("\n");
 	}
 
-	public static String findID(int idCount) {
-		String base = "FAILURE";
-		int counter = -1;
-		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if (temp.getGrammarId().equals("identifier")) {
-				counter++;
-				if (counter == idCount) {
-					base = temp.getValue();
-				}
-			}
-		}
-		return base;
-	}
-
-	public static String findStringLiteral(int strCount) {
-		String base = "FAILURE";
-		int counter = -1;
-		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if (temp.getGrammarId().equals("'string_literal'")) {
-				counter++;
-				if (counter == strCount) {
-					base = temp.getValue();
-				}
-			}
-		}
-		return base;
-	}
-
-	public static String findChar(int charCount) {
-		String base = "FAILURE";
-		int counter = -1;
-		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if (temp.getGrammarId().equals("'c'")) {
-				counter++;
-				if (counter == charCount) {
-					base = temp.getValue();
-				}
-			}
-		}
-		return base;
-	}
-
-	public static String findNum(int numCount) {
-		String base = "FAILURE";
-		int counter = -1;
-		for (cosc470.compiler.v3.database.Token temp : tokens) {
-			if (temp.getGrammarId().equals("num")) {
-				counter++;
-				if (counter == numCount) {
-					base = temp.getValue();
-				}
-			}
-		}
-		return base;
-	}
-
+	
 	public static void addSymbolTableItem(String name, String type, String size, String value) {
 		try {
 			symbolTable.add(new SymbolTableItem(name, type, size, value));
@@ -337,11 +283,28 @@ public class Database {
 	}
 
 	public static void printAntlrCodeInput() {
-		System.out.printf("\n\nAntlr Code Input: \n%s", antlrCodeInput);
+		System.out.printf("\n\nAntlr Code Input: \n%s\n\n", antlrCodeInput);
 	}
 
 	public static void setAntlrOperationsList(String antlrOperations) {
 		antlrOperationsList = antlrOperations;
+	}
+
+	public static void addExpressionListItem(String item) {
+		expressionList.add(item);
+	}
+
+	public static ArrayList<String> getExpressionList() {
+		return expressionList;
+	}
+
+	public static void printExpressionList() {
+		System.out.printf("\n\nExpression List:");
+		for (int i = 0; i < expressionList.size();) {
+			System.out.printf("\n%-30s%s", expressionList.get(i), expressionList.get(i + 1));
+			i = i + 2;
+		}
+		System.out.println("\n");
 	}
 
 	public static String getAntlrOperationsList() {
@@ -349,7 +312,7 @@ public class Database {
 	}
 
 	public static void printAntlrOperationsList() {
-		System.out.printf("\n\nAntlr Operations: \n%s", antlrOperationsList);
+		System.out.printf("\n\nAntlr Operations: \n%s\n\n", antlrOperationsList);
 	}
 
 	public static void printDatabaseAndProcesses() {
@@ -365,6 +328,7 @@ public class Database {
 		printSymbolTableItems();
 		printAntlrCodeInput();
 		printAntlrOperationsList();
+		printExpressionList();
 	}
 
 }

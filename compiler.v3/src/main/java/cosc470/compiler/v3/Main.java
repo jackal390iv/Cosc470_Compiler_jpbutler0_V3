@@ -25,16 +25,14 @@ public class Main {
 
 		// Run basic syntax checker, create tokens, and creates symbol table
 		cosc470.compiler.v3.syntaxchecker.SyntaxChecker syntaxChecker = new cosc470.compiler.v3.syntaxchecker.SyntaxChecker();
-
+		
 		//
 		cosc470.compiler.v3.antlr.AntlrOperator antlrOperator = new cosc470.compiler.v3.antlr.AntlrOperator();
 
 		// Print all program operations
-		//database.printDatabaseAndProcesses();
+		database.printDatabaseAndProcesses();
 		
-
-		
-		
+		//database.printAntlrCodeInput();		database.printExpressionList();		database.printAntlrOperationsList();
 		
 
 	}

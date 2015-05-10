@@ -1,7 +1,8 @@
 DECLARE
-    my_vchar    VARCHAR2(6);    
-    my_bool     BOOLEAN ;
-    total       SMALLINT     (  3    )  ;
+     my_small_int SMALLINT:=-1;
 BEGIN
     NULL;
 END;\
+
+
+--DECLAREidentifierSMALLINT(num):=-num;BEGINNULL;END;\
