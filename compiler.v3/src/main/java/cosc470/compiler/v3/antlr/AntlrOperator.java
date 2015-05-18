@@ -203,16 +203,6 @@ public class AntlrOperator {
 		return base;
 	}
 
-	/*
-	 * private void evaluateExpressions() { String holder = ""; for (int i = 0;
-	 * i < evaluator.size(); i++) { if
-	 * (evaluator.get(i).contains("Expression(")) { holder =
-	 * evaluator.get(i).substring((evaluator.get(i).indexOf("Expression(") + 1),
-	 * (evaluator.get(i).indexOf(')'))).trim(); holder =
-	 * processExpression(holder); evaluator.remove(i); evaluator.add(i, holder);
-	 * } } }
-	 */
-
 	private void printEvaluator() {
 		for (String temp : evaluator) {
 			System.out.println(temp);
@@ -326,11 +316,15 @@ public class AntlrOperator {
 	private boolean ifThenEndLoop(int i) {
 		boolean found = false;
 		int pacer, counter;
+		String holder = "";
 		if (evaluator.get(i).equals("IF{")) {
 			found = true;
+			holder = expressionHandler(evaluator.get(i + 1).substring((evaluator.get(i + 1).indexOf("(") + 1), (evaluator.get(i + 1).indexOf(')'))).trim());
+			evaluator.remove(i + 1);
+			evaluator.add((i + 1), holder);
 			pacer = i;
 			counter = 0;
-			while (!(evaluator.get(pacer).equals("}End"))) {
+			while (!(evaluator.get(pacer).equals("}IFEnd"))) {
 				counter++;
 				pacer++;
 			}
@@ -354,11 +348,15 @@ public class AntlrOperator {
 	private boolean whileLoop(int i) {
 		boolean found = false, accepted;
 		int pacer, counter, keeper, block;
+		String holder = "";
 		if (evaluator.get(i).equals("WHILE{")) {
 			found = true;
+			holder = expressionHandler(evaluator.get(i + 1).substring((evaluator.get(i + 1).indexOf("(") + 1), (evaluator.get(i + 1).indexOf(')'))).trim());
+			evaluator.remove(i + 1);
+			evaluator.add((i + 1), holder);
 			pacer = i;
 			counter = 0;
-			while (!(evaluator.get(pacer).equals("}End"))) {
+			while (!(evaluator.get(pacer).equals("}WHILEEnd"))) {
 				counter++;
 				pacer++;
 			}

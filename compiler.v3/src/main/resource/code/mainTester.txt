@@ -18,25 +18,25 @@ DECLARE
 
 BEGIN
 	
-	--my_char := 'b';													-- will change the value of my_char to 'b'
+	my_char := 'b';													-- will change the value of my_char to 'b'
 	 	
-	--IF BEGIN my_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;			-- will print my_bool, as TRUE
+	IF BEGIN my_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;			-- will print my_bool, as TRUE
 
-	--& my_positive_int;													-- will ask user to input a value to overwrite my_small_int current value 
+	& my_positive_int;													-- will ask user to input a value to overwrite my_small_int current value 
 	
-	--DBMS_OUTPUT.PUT_LINE(my_small_int);								-- will print the new value that the user has assigned to my_small_int
+	DBMS_OUTPUT.PUT_LINE(my_small_int);								-- will print the new value that the user has assigned to my_small_int
 	
-	--IF BEGIN NOTmy_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;		-- will not print my_bool, as value has been changed to 'FALSE'
+	IF BEGIN my_bool THEN DBMS_OUTPUT.PUT(my_bool); END IF;		-- will not print my_bool, as value has been changed to 'FALSE'
 	
-	--IF BEGIN my_num THEN DBMS_OUTPUT.PUT(my_num); END IF;			-- will not print my_bool, as integer is not accepted for if/the/end loop
+	IF BEGIN my_num THEN DBMS_OUTPUT.PUT(my_num); END IF;			-- will not print my_bool, as integer is not accepted for if/the/end loop
 	
-	--DBMS_OUTPUT.NEW_LINE;											-- will move print to a new line
+	DBMS_OUTPUT.NEW_LINE;											-- will move print to a new line
 	
-	--WHILE my_num-1 LOOP DBMS_OUTPUT.PUT(my_num); END LOOP;			-- will print my_int twice, as 3-1=2
+	WHILE my_num-1 LOOP DBMS_OUTPUT.PUT(my_num); END LOOP;			-- will print my_int twice, as 3-1=2
 	
 	my_num := SMALLINT (5) ( 5 + NOTNOTNOTmy_positive_int-8*NOTmy_num);					-- will overwrite the value of my_num to the value of 5 + my_positive_int, as 8
 	
-	--DBMS_OUTPUT.PUT_LINE(my_num);									-- will print the new value of my_num		
+	DBMS_OUTPUT.PUT_LINE(my_num);									-- will print the new value of my_num		
 		
 END;\
 

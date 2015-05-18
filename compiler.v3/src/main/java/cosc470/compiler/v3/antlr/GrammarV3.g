@@ -124,7 +124,7 @@ output_line returns [String operations]:
 looping_statements returns [String operations]: 
 'IF BEGIN' expression 'THEN' statement 'END IF' end_block
 {//if expression then do statement, otherwise don't do statement
-  $operations=",IF{"+$expression.value+",}THEN{"+$statement.operations+",}End";
+  $operations=",IF{"+$expression.value+",}THEN{"+$statement.operations+",}IFEnd";
   /*if($expression.value.equals("TRUE")){
     $operations=$statement.operations;
   }else{
@@ -133,7 +133,7 @@ looping_statements returns [String operations]:
 }
 | 'WHILE' expression 'LOOP' statement 'END LOOP' end_block
 {//while expression do statement
-  $operations=",WHILE{"+$expression.value+",}Loop{"+$statement.operations+",}End";
+  $operations=",WHILE{"+$expression.value+",}Loop{"+$statement.operations+",}WHILEEnd";
  /*if($expression.value.matches("-?\\d+(\\.\\d+)?")){
     int counter=0;
     while(counter<(Integer.parseInt($expression.value))){

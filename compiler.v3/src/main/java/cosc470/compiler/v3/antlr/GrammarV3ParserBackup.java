@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g 2015-05-17 22:20:56
+// $ANTLR 3.5.2 C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g 2015-05-18 00:00:15
 
   package cosc470.compiler.v3.antlr;
   //import cosc470.compiler.v3.database.Database;
@@ -1354,7 +1354,7 @@ public class GrammarV3ParserBackup extends Parser {
 					state._fsp--;
 
 					//if expression then do statement, otherwise don't do statement
-					  operations =",IF{"+(expression29!=null?((GrammarV3ParserBackup.expression_return)expression29).value:null)+",}THEN{"+statement30+",}End";
+					  operations =",IF{"+(expression29!=null?((GrammarV3ParserBackup.expression_return)expression29).value:null)+",}THEN{"+statement30+",}IFEnd";
 					  /*if((expression29!=null?((GrammarV3Parser.expression_return)expression29).value:null).equals("TRUE")){
 					    operations =statement30;
 					  }else{
@@ -1382,7 +1382,7 @@ public class GrammarV3ParserBackup extends Parser {
 					state._fsp--;
 
 					//while expression do statement
-					  operations =",WHILE{"+(expression31!=null?((GrammarV3ParserBackup.expression_return)expression31).value:null)+",}Loop{"+statement32+",}End";
+					  operations =",WHILE{"+(expression31!=null?((GrammarV3ParserBackup.expression_return)expression31).value:null)+",}Loop{"+statement32+",}WHILEEnd";
 					 /*if((expression31!=null?((GrammarV3Parser.expression_return)expression31).value:null).matches("-?\\d+(\\.\\d+)?")){
 					    int counter=0;
 					    while(counter<(Integer.parseInt((expression31!=null?((GrammarV3Parser.expression_return)expression31).value:null)))){
