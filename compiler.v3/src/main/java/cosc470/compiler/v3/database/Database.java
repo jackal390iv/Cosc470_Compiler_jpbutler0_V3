@@ -6,7 +6,7 @@ public class Database {
 
 	private static String commentSymbol, commentBlockStartSymbol, commentBlockEndSymbol, antlrCodeInput, antlrOperationsList;
 
-	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList, expressionList, executionList,evaluatorList;
+	private static ArrayList<String> reserveWords, unknownVariables, combinableWords, nonCombinableReserveWords, codeText, codeList, expressionList, executionList,evaluatorList,evaluatorMain,intermediateCode;
 
 	private static ArrayList<cosc470.compiler.v3.database.Token> tokens;
 
@@ -28,6 +28,8 @@ public class Database {
 		expressionList = new ArrayList<String>();
 		executionList= new ArrayList<String>();
 		evaluatorList= new ArrayList<String>();
+                evaluatorMain= new ArrayList<String>();
+                intermediateCode= new ArrayList<String>();
 	}
 
 	public static void setCommentSymbol(String symbol) {
@@ -346,6 +348,39 @@ public class Database {
 		}
 		System.out.println("\n");
 	}
+        
+        public static void addEvaluatorMainItem(String item){
+            evaluatorMain.add(item);
+        }
+        
+        public static ArrayList<String> getEvaluatorMain(){
+            return evaluatorMain;
+        }
+        
+        public static void printEvaluatorMain(){
+            System.out.printf("\n\nEvaluator Main:\n");
+		for (String temp : evaluatorMain) {
+			System.out.println(temp);
+		}
+		System.out.println("\n");
+        }
+        
+        public static void addIntermediateCode(String code){
+            int temp=intermediateCode.size();
+            intermediateCode.add(temp+" "+code);
+        }
+        
+        public static ArrayList<String> getIntermediateCode(){
+            return intermediateCode;
+        }
+        
+        public static void printIntermediateCode(){
+            System.out.printf("\n\nIntermediate Code:\n");
+		for (String temp : intermediateCode) {
+			System.out.println(temp);
+		}
+		System.out.println("\n");
+        }
 
 	public static void printDatabaseAndProcesses() {
 		System.out.printf("\n\nDatabase And Processes:");
@@ -362,6 +397,7 @@ public class Database {
 		printEvaluatorList();
 		printExpressionList();
 		printExecutionList();
+                printIntermediateCode();
 	}
 
 }
