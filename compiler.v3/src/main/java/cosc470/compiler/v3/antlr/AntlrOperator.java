@@ -20,7 +20,7 @@ public class AntlrOperator {
 	public AntlrOperator() {
 		runTest();
 		createEvaluator();
-		// evaluateExpressions();
+		cosc470.compiler.v3.database.Database.printDatabaseAndProcesses();
 		allOperations();
 		// printEvaluator();
 	}
@@ -530,14 +530,13 @@ public class AntlrOperator {
 
 	}
 
-	private String expressionHandler(String expression) {
-		// System.out.println(expression);
+	public static String expressionHandler(String expression) {
+		//System.out.println(expression);
 		String holder = "";
 		int counter = 0;
 		List<String> expressionSplit = new ArrayList<String>(Arrays.asList(expression.split("(?<=[-,+,*,/,%,<,>,=])|(?=[-,+,*,/,%,<,>,=])")));
 
-		// System.out.println("\n"); for (String temp : expressionSplit)
-		// {System.out.println(temp); } System.out.println("\n");
+		//System.out.println("\n"); for (String temp : expressionSplit){System.out.println(temp); } System.out.println("\n");
 
 		for (int i = 0; i < expressionSplit.size(); i++) {
 			if (!((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?") || (expressionSplit.get(i).matches("[-,+,*,/,%,<,>,=]"))))) {
@@ -576,17 +575,16 @@ public class AntlrOperator {
 			}
 		}
 
-		// System.out.println("\n"); for (String temp : expressionSplit)
-		// {System.out.println(temp); } System.out.println("\n");
+		//System.out.println("\n"); for (String temp : expressionSplit){System.out.println(temp); } System.out.println("\n");
 
 		holder = "";
 		for (String temp : expressionSplit) {
 			holder = holder + temp;
 		}
 
-		// System.out.println(holder);
+		 System.out.println(holder);
 		holder = processExpression(holder);
-		// System.out.println(holder);
+		 System.out.println(holder);
 
 		return holder;
 	}

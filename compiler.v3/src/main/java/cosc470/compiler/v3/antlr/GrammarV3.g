@@ -39,10 +39,9 @@ declare_rest: identifier type end_block declare_rest
     type=$type.OWtype;
     size=$type.OWsize;
   }
-    
+   
   if(value.contains("Expression(")){
     value=value.substring((value.indexOf('(')+1),(value.indexOf(')'))).trim(); 
-    value=AntlrOperator.processExpression(value);   
   } 
   
   //System.out.println("\n\nName: "+name+"\nType: "+type+"\nSize: "+size+"\nValue: "+value);
