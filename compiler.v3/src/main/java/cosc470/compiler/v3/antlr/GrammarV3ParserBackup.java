@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g 2015-05-10 18:19:07
+// $ANTLR 3.5.2 C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g 2015-05-17 22:20:56
 
   package cosc470.compiler.v3.antlr;
   //import cosc470.compiler.v3.database.Database;
@@ -2101,35 +2101,11 @@ public class GrammarV3ParserBackup extends Parser {
 					helper_factor59=helper_factor();
 					state._fsp--;
 
-
-					  if(helper_factor59.equals("TRUE")){
-					    value ="FALSE";
-					  }  
-					  else if(helper_factor59.equals("FALSE")){
-					    value ="TRUE";
-					  }
-					  else if(helper_factor59.matches("-?\\d+(\\.\\d+)?")){
-					    value =Integer.toString((Integer.parseInt(helper_factor59)*-1));
-					  }
-					  else{
-					    String temp=AntlrOperator.getSymbolTableValue_byName(helper_factor59);
-					    
-					    if(temp.equals("TRUE")){
-					    value ="FALSE";
-					  }  
-					  else if(temp.equals("FALSE")){
-					    value ="TRUE";
-					  }
-					  else if(temp.matches("-?\\d+(\\.\\d+)?")){
-					    value =Integer.toString((Integer.parseInt(temp)*-1));
-					  }
-					    
-					  }
-
+					  value ="NOT" + helper_factor59;
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:231:2: factor
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:207:2: factor
 					{
 					pushFollow(FOLLOW_factor_in_pre_factor693);
 					factor60=factor();
@@ -2155,7 +2131,7 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "helper_factor"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:234:1: helper_factor returns [String value] : pre_factor ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:210:1: helper_factor returns [String value] : pre_factor ;
 	public final String helper_factor() throws RecognitionException {
 		String value = null;
 
@@ -2163,8 +2139,8 @@ public class GrammarV3ParserBackup extends Parser {
 		String pre_factor61 =null;
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:234:36: ( pre_factor )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:235:1: pre_factor
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:210:36: ( pre_factor )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:211:1: pre_factor
 			{
 			pushFollow(FOLLOW_pre_factor_in_helper_factor705);
 			pre_factor61=pre_factor();
@@ -2188,7 +2164,7 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "factor"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:237:1: factor returns [String value] : ( identifier | num | 'TRUE' | 'FALSE' | 'NULL' );
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:213:1: factor returns [String value] : ( identifier | num | 'TRUE' | 'FALSE' | 'NULL' );
 	public final String factor() throws RecognitionException {
 		String value = null;
 
@@ -2197,7 +2173,7 @@ public class GrammarV3ParserBackup extends Parser {
 		String num63 =null;
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:237:30: ( identifier | num | 'TRUE' | 'FALSE' | 'NULL' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:213:30: ( identifier | num | 'TRUE' | 'FALSE' | 'NULL' )
 			int alt18=5;
 			switch ( input.LA(1) ) {
 			case 43:
@@ -2233,17 +2209,17 @@ public class GrammarV3ParserBackup extends Parser {
 			}
 			switch (alt18) {
 				case 1 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:238:1: identifier
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:214:1: identifier
 					{
 					pushFollow(FOLLOW_identifier_in_factor720);
 					identifier62=identifier();
 					state._fsp--;
 
-					value =AntlrOperator.getSymbolTableValue_byName(identifier62);
+					value =identifier62;
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:239:2: num
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:215:2: num
 					{
 					pushFollow(FOLLOW_num_in_factor725);
 					num63=num();
@@ -2253,21 +2229,21 @@ public class GrammarV3ParserBackup extends Parser {
 					}
 					break;
 				case 3 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:240:2: 'TRUE'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:216:2: 'TRUE'
 					{
 					match(input,39,FOLLOW_39_in_factor730); 
 					value ="TRUE";
 					}
 					break;
 				case 4 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:241:2: 'FALSE'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:217:2: 'FALSE'
 					{
 					match(input,30,FOLLOW_30_in_factor734); 
 					value ="FALSE";
 					}
 					break;
 				case 5 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:242:2: 'NULL'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:218:2: 'NULL'
 					{
 					match(input,34,FOLLOW_34_in_factor738); 
 					value ="NULL";
@@ -2290,17 +2266,17 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "identifier"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:244:1: identifier returns [String value] : ( 'identifier' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:220:1: identifier returns [String value] : ( 'identifier' ) ;
 	public final String identifier() throws RecognitionException {
 		String value = null;
 
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:244:34: ( ( 'identifier' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:245:2: ( 'identifier' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:220:34: ( ( 'identifier' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:221:2: ( 'identifier' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:245:2: ( 'identifier' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:245:2: 'identifier'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:221:2: ( 'identifier' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:221:2: 'identifier'
 			{
 			match(input,43,FOLLOW_43_in_identifier752); 
 			}
@@ -2323,7 +2299,7 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "num"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:248:1: num returns [String size] : ( 'num' | negative 'num' );
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:224:1: num returns [String size] : ( 'num' | negative 'num' );
 	public final String num() throws RecognitionException {
 		String size = null;
 
@@ -2331,7 +2307,7 @@ public class GrammarV3ParserBackup extends Parser {
 		ParserRuleReturnScope negative64 =null;
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:248:26: ( 'num' | negative 'num' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:224:26: ( 'num' | negative 'num' )
 			int alt19=2;
 			int LA19_0 = input.LA(1);
 			if ( (LA19_0==44) ) {
@@ -2349,14 +2325,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 			switch (alt19) {
 				case 1 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:249:1: 'num'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:225:1: 'num'
 					{
 					match(input,44,FOLLOW_44_in_num767); 
 					size =AntlrOperator.findNum(numCount);numCount++;
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:251:1: negative 'num'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:227:1: negative 'num'
 					{
 					pushFollow(FOLLOW_negative_in_num774);
 					negative64=negative();
@@ -2387,17 +2363,17 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "negative"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:1: negative returns [String value] : ( '-' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:230:1: negative returns [String value] : ( '-' ) ;
 	public final GrammarV3ParserBackup.negative_return negative() throws RecognitionException {
 		GrammarV3ParserBackup.negative_return retval = new GrammarV3ParserBackup.negative_return();
 		retval.start = input.LT(1);
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:32: ( ( '-' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:34: ( '-' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:230:32: ( ( '-' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:230:34: ( '-' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:34: ( '-' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:35: '-'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:230:34: ( '-' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:230:35: '-'
 			{
 			match(input,10,FOLLOW_10_in_negative791); 
 			}
@@ -2422,17 +2398,17 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "string_literal"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:256:1: string_literal returns [String value] : ( 'string_literal' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:232:1: string_literal returns [String value] : ( 'string_literal' ) ;
 	public final String string_literal() throws RecognitionException {
 		String value = null;
 
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:256:38: ( ( 'string_literal' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:257:2: ( 'string_literal' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:232:38: ( ( 'string_literal' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:233:2: ( 'string_literal' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:257:2: ( 'string_literal' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:257:2: 'string_literal'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:233:2: ( 'string_literal' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:233:2: 'string_literal'
 			{
 			match(input,46,FOLLOW_46_in_string_literal806); 
 			}
@@ -2455,17 +2431,17 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "single_char"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:260:1: single_char returns [String value] : ( 'single_char' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:236:1: single_char returns [String value] : ( 'single_char' ) ;
 	public final String single_char() throws RecognitionException {
 		String value = null;
 
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:260:35: ( ( 'single_char' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:261:2: ( 'single_char' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:236:35: ( ( 'single_char' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:237:2: ( 'single_char' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:261:2: ( 'single_char' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:261:2: 'single_char'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:237:2: ( 'single_char' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:237:2: 'single_char'
 			{
 			match(input,45,FOLLOW_45_in_single_char821); 
 			}
@@ -2488,14 +2464,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "empty"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:264:1: empty : () ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:240:1: empty : () ;
 	public final void empty() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:264:6: ( () )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:265:2: ()
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:240:6: ( () )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:241:2: ()
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:265:2: ()
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:265:2: 
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:241:2: ()
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:241:2: 
 			{
 			}
 
@@ -2511,14 +2487,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "end_program"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:267:1: end_program : ( '\\\\' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:243:1: end_program : ( '\\\\' ) ;
 	public final void end_program() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:267:12: ( ( '\\\\' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:267:14: ( '\\\\' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:243:12: ( ( '\\\\' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:243:14: ( '\\\\' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:267:14: ( '\\\\' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:267:15: '\\\\'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:243:14: ( '\\\\' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:243:15: '\\\\'
 			{
 			match(input,42,FOLLOW_42_in_end_program841); 
 			}
@@ -2539,14 +2515,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "end_block"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:269:1: end_block : ( ';' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:245:1: end_block : ( ';' ) ;
 	public final void end_block() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:269:10: ( ( ';' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:270:2: ( ';' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:245:10: ( ( ';' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:246:2: ( ';' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:270:2: ( ';' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:270:2: ';'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:246:2: ( ';' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:246:2: ';'
 			{
 			match(input,13,FOLLOW_13_in_end_block851); 
 			}
@@ -2567,14 +2543,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "equals"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:272:1: equals : ( ':=' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:248:1: equals : ( ':=' ) ;
 	public final void equals() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:272:7: ( ( ':=' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:273:2: ( ':=' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:248:7: ( ( ':=' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:249:2: ( ':=' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:273:2: ( ':=' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:273:2: ':='
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:249:2: ( ':=' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:249:2: ':='
 			{
 			match(input,12,FOLLOW_12_in_equals861); 
 			}
@@ -2595,14 +2571,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "semicolon_left"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:275:1: semicolon_left : ( '(' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:251:1: semicolon_left : ( '(' ) ;
 	public final void semicolon_left() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:275:15: ( ( '(' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:276:2: ( '(' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:251:15: ( ( '(' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:252:2: ( '(' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:276:2: ( '(' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:276:2: '('
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:252:2: ( '(' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:252:2: '('
 			{
 			match(input,6,FOLLOW_6_in_semicolon_left871); 
 			}
@@ -2623,14 +2599,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "semicolon_right"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:278:1: semicolon_right : ( ')' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:1: semicolon_right : ( ')' ) ;
 	public final void semicolon_right() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:278:16: ( ( ')' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:279:2: ( ')' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:254:16: ( ( ')' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:255:2: ( ')' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:279:2: ( ')' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:279:2: ')'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:255:2: ( ')' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:255:2: ')'
 			{
 			match(input,7,FOLLOW_7_in_semicolon_right881); 
 			}
@@ -2651,14 +2627,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "and"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:281:1: and : ( '&' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:257:1: and : ( '&' ) ;
 	public final void and() throws RecognitionException {
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:281:4: ( ( '&' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:282:2: ( '&' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:257:4: ( ( '&' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:258:2: ( '&' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:282:2: ( '&' )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:282:2: '&'
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:258:2: ( '&' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:258:2: '&'
 			{
 			match(input,5,FOLLOW_5_in_and891); 
 			}
@@ -2683,16 +2659,16 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "relop"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:284:1: relop returns [String symbol] : ( '>' | '>=' | '==' | '<=' | '<' | '<>' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:260:1: relop returns [String symbol] : ( '>' | '>=' | '==' | '<=' | '<' | '<>' ) ;
 	public final GrammarV3ParserBackup.relop_return relop() throws RecognitionException {
 		GrammarV3ParserBackup.relop_return retval = new GrammarV3ParserBackup.relop_return();
 		retval.start = input.LT(1);
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:284:29: ( ( '>' | '>=' | '==' | '<=' | '<' | '<>' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:285:2: ( '>' | '>=' | '==' | '<=' | '<' | '<>' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:260:29: ( ( '>' | '>=' | '==' | '<=' | '<' | '<>' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:261:2: ( '>' | '>=' | '==' | '<=' | '<' | '<>' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:285:2: ( '>' | '>=' | '==' | '<=' | '<' | '<>' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:261:2: ( '>' | '>=' | '==' | '<=' | '<' | '<>' )
 			int alt20=6;
 			switch ( input.LA(1) ) {
 			case 18:
@@ -2732,42 +2708,42 @@ public class GrammarV3ParserBackup extends Parser {
 			}
 			switch (alt20) {
 				case 1 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:285:2: '>'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:261:2: '>'
 					{
 					match(input,18,FOLLOW_18_in_relop903); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:286:2: '>='
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:262:2: '>='
 					{
 					match(input,19,FOLLOW_19_in_relop907); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 3 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:287:2: '=='
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:263:2: '=='
 					{
 					match(input,17,FOLLOW_17_in_relop911); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 4 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:288:2: '<='
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:264:2: '<='
 					{
 					match(input,15,FOLLOW_15_in_relop915); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 5 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:289:2: '<'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:265:2: '<'
 					{
 					match(input,14,FOLLOW_14_in_relop919); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 6 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:290:2: '<>'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:266:2: '<>'
 					{
 					match(input,16,FOLLOW_16_in_relop923); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
@@ -2799,16 +2775,16 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "addop"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:292:1: addop returns [String symbol] : ( '+' | '-' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:268:1: addop returns [String symbol] : ( '+' | '-' ) ;
 	public final GrammarV3ParserBackup.addop_return addop() throws RecognitionException {
 		GrammarV3ParserBackup.addop_return retval = new GrammarV3ParserBackup.addop_return();
 		retval.start = input.LT(1);
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:292:29: ( ( '+' | '-' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:293:2: ( '+' | '-' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:268:29: ( ( '+' | '-' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:269:2: ( '+' | '-' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:293:2: ( '+' | '-' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:269:2: ( '+' | '-' )
 			int alt21=2;
 			int LA21_0 = input.LA(1);
 			if ( (LA21_0==9) ) {
@@ -2826,14 +2802,14 @@ public class GrammarV3ParserBackup extends Parser {
 
 			switch (alt21) {
 				case 1 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:293:2: '+'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:269:2: '+'
 					{
 					match(input,9,FOLLOW_9_in_addop936); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:294:2: '-'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:270:2: '-'
 					{
 					match(input,10,FOLLOW_10_in_addop940); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
@@ -2865,16 +2841,16 @@ public class GrammarV3ParserBackup extends Parser {
 
 
 	// $ANTLR start "mulop"
-	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:296:1: mulop returns [String symbol] : ( '*' | '/' | '%' ) ;
+	// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:272:1: mulop returns [String symbol] : ( '*' | '/' | '%' ) ;
 	public final GrammarV3ParserBackup.mulop_return mulop() throws RecognitionException {
 		GrammarV3ParserBackup.mulop_return retval = new GrammarV3ParserBackup.mulop_return();
 		retval.start = input.LT(1);
 
 		try {
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:296:29: ( ( '*' | '/' | '%' ) )
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:297:2: ( '*' | '/' | '%' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:272:29: ( ( '*' | '/' | '%' ) )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:273:2: ( '*' | '/' | '%' )
 			{
-			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:297:2: ( '*' | '/' | '%' )
+			// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:273:2: ( '*' | '/' | '%' )
 			int alt22=3;
 			switch ( input.LA(1) ) {
 			case 8:
@@ -2899,21 +2875,21 @@ public class GrammarV3ParserBackup extends Parser {
 			}
 			switch (alt22) {
 				case 1 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:297:2: '*'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:273:2: '*'
 					{
 					match(input,8,FOLLOW_8_in_mulop953); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 2 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:298:2: '/'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:274:2: '/'
 					{
 					match(input,11,FOLLOW_11_in_mulop957); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));
 					}
 					break;
 				case 3 :
-					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:299:2: '%'
+					// C:\\Users\\Reaper\\Documents\\NetBeansProjects\\Cosc470_Compiler_jpbutler0_V3\\compiler.v3\\src\\main\\java\\cosc470\\compiler\\v3\\antlr\\GrammarV3.g:275:2: '%'
 					{
 					match(input,4,FOLLOW_4_in_mulop961); 
 					retval.symbol = input.toString(retval.start,input.LT(-1));

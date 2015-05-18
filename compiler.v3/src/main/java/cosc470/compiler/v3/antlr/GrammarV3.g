@@ -203,31 +203,7 @@ d{$value=$d.value;};
 
 pre_factor returns [String value]: 
 'NOT' helper_factor 
-{
-  if($helper_factor.value.equals("TRUE")){
-    $value="FALSE";
-  }  
-  else if($helper_factor.value.equals("FALSE")){
-    $value="TRUE";
-  }
-  else if($helper_factor.value.matches("-?\\d+(\\.\\d+)?")){
-    $value=Integer.toString((Integer.parseInt($helper_factor.value)*-1));
-  }
-  else{
-    String temp=AntlrOperator.getSymbolTableValue_byName($helper_factor.value);
-    
-    if(temp.equals("TRUE")){
-    $value="FALSE";
-  }  
-  else if(temp.equals("FALSE")){
-    $value="TRUE";
-  }
-  else if(temp.matches("-?\\d+(\\.\\d+)?")){
-    $value=Integer.toString((Integer.parseInt(temp)*-1));
-  }
-    
-  }
-}
+{  $value="NOT" + $helper_factor.value;}
 |factor
 {$value=$factor.value;};
 
@@ -235,7 +211,7 @@ helper_factor returns[String value]:
 pre_factor {$value=$pre_factor.value;}; 
 
 factor returns [String value]: 
-identifier {$value=AntlrOperator.getSymbolTableValue_byName($identifier.value);}
+identifier {$value=$identifier.value;}
 |num {$value=$num.size;}
 |'TRUE'{$value="TRUE";}
 |'FALSE'{$value="FALSE";}

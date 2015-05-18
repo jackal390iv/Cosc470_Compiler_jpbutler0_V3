@@ -13,124 +13,16 @@ import java.util.Scanner;
 public class AntlrOperator {
 
 	private static List<String> evaluator;
-	private ArrayList<String> chest;
+	// private ArrayList<String> chest;
 	int kept = 0;
 	String evalList = "";
 
 	public AntlrOperator() {
 		runTest();
 		createEvaluator();
-		evaluateExpressions();
+		// evaluateExpressions();
 		allOperations();
-	}
-
-	private void allOperations() {
-		while (!(evaluator.isEmpty())) {
-			setEvaluator();
-			checkTypes();
-			allOperationsHelper();
-			checkTypes();
-		}
-	}
-
-	private void printEvaluator() {
-		for (String temp : evaluator) {
-			System.out.println(temp);
-		}
-		System.out.println("\n\n");
-	}
-
-	private void setEvaluator() {
-		evalList = "";
-		for (String temp : evaluator) {
-			evalList = evalList + temp + ",";
-		}
-		cosc470.compiler.v3.database.Database.addEvaluatorListItem(evalList);
-		// System.out.println("\n"+evalList);
-	}
-
-	private void checkTypes() {
-		String name = "", type = "", value = "";
-		int size = 0;
-
-		for (int i = 0; i < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); i++) {
-			name = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getName();
-			type = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getType();
-			value = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getValue();
-			if (!(cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getSize().matches("[0-9]*"))) {
-				System.out.printf("ERROR: Variable %s size has not been correctly set.", name);
-				System.exit(0);
-			}
-			cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).setSize(Integer.toString(value.length()));
-			size = Integer.parseInt(cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getSize());
-			if (!(value.equals(""))) {
-				if (type.equals("NUMBER")) {
-					if (!(value.matches("-?\\d+(\\.\\d+)?"))) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					}
-				} else if (type.equals("POSITIVE")) {
-					if (!(value.matches("\\d+(\\.\\d+)?"))) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					}
-				} else if (type.equals("SMALLINT")) {
-					if (!(value.matches("-?\\d+(\\.\\d+)?"))) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					} else if (!((Integer.parseInt(value)) <= 32767)) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					} else if (!((Integer.parseInt(value)) >= -32768)) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					}
-				} else if (type.equals("BOOLEAN")) {
-					if (!((value.equals("TRUE")) || (value.equals("FALSE")))) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					}
-				} else if (type.equals("CHAR")) {
-					if (!(value.length() == 3)) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					} else if (!((value.startsWith("'")) && (value.endsWith("'")))) {
-						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
-						System.exit(0);
-					}
-				}
-
-			}
-		}
-
-	}
-
-	private void allOperationsHelper() {
-		boolean found = false;
-		for (int i = 0; i < evaluator.size(); i++) {
-			found = ifThenEndLoop(i);
-			if (found == true) {
-				break;
-			}
-
-			found = userInput(i);
-			if (found == true) {
-				break;
-			}
-			found = whileLoop(i);
-			if (found == true) {
-				break;
-			}
-			found = leftHandSideOperator(i);
-
-			if (found == true) {
-				break;
-			}
-			found = printStatements(i);
-			if (found == true) {
-				break;
-			}
-		}
+		// printEvaluator();
 	}
 
 	private void runTest() {
@@ -150,6 +42,31 @@ public class AntlrOperator {
 			TokenStream tokenStream = new CommonTokenStream(lexer);
 			GrammarV3ParserBackup parser = new GrammarV3ParserBackup(tokenStream);
 			parser.block();
+
+		} catch (Exception ex) {
+			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
+					ex.getMessage(), ex.getLocalizedMessage());
+			// ex.printStackTrace();
+			System.exit(0);
+		}
+	}
+
+	private void createEvaluator() {
+		try {
+			String holder = "";
+			cosc470.compiler.v3.database.Database.addEvaluatorListItem(cosc470.compiler.v3.database.Database.getAntlrOperationsList());
+			evaluator = new ArrayList<String>(Arrays.asList(cosc470.compiler.v3.database.Database.getAntlrOperationsList().split(",")));
+
+			for (int i = 0; i < evaluator.size(); i++) {
+				if (evaluator.get(i).trim().equals("")) {
+					evaluator.remove(i);
+					i = i - 1;
+				} else {
+					holder = evaluator.get(i).trim();
+					evaluator.remove(i);
+					evaluator.add(i, holder);
+				}
+			}
 
 		} catch (Exception ex) {
 			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
@@ -286,39 +203,122 @@ public class AntlrOperator {
 		return base;
 	}
 
-	private void createEvaluator() {
-		try {
-			String holder = "";
-			cosc470.compiler.v3.database.Database.addEvaluatorListItem(cosc470.compiler.v3.database.Database.getAntlrOperationsList());
-			evaluator = new ArrayList<String>(Arrays.asList(cosc470.compiler.v3.database.Database.getAntlrOperationsList().split(",")));
+	/*
+	 * private void evaluateExpressions() { String holder = ""; for (int i = 0;
+	 * i < evaluator.size(); i++) { if
+	 * (evaluator.get(i).contains("Expression(")) { holder =
+	 * evaluator.get(i).substring((evaluator.get(i).indexOf("Expression(") + 1),
+	 * (evaluator.get(i).indexOf(')'))).trim(); holder =
+	 * processExpression(holder); evaluator.remove(i); evaluator.add(i, holder);
+	 * } } }
+	 */
 
-			for (int i = 0; i < evaluator.size(); i++) {
-				if (evaluator.get(i).trim().equals("")) {
-					evaluator.remove(i);
-					i = i - 1;
-				} else {
-					holder = evaluator.get(i).trim();
-					evaluator.remove(i);
-					evaluator.add(i, holder);
-				}
-			}
+	private void printEvaluator() {
+		for (String temp : evaluator) {
+			System.out.println(temp);
+		}
+		System.out.println("\n\n");
+	}
 
-		} catch (Exception ex) {
-			System.out.printf("\n\nERROR\nType: %s\nLocation: %s\nThrown Exception: %s\nMessage: %s\nLocalMessage: %s\n", ex.getClass().getName(), ex.getStackTrace()[2], ex.getCause(),
-					ex.getMessage(), ex.getLocalizedMessage());
-			// ex.printStackTrace();
-			System.exit(0);
+	private void allOperations() {
+		while (!(evaluator.isEmpty())) {
+			// printEvaluator();
+			setEvaluator();
+			checkTypes();
+			allOperationsHelper();
+			checkTypes();
 		}
 	}
 
-	private void evaluateExpressions() {
-		String holder = "";
+	private void setEvaluator() {
+		evalList = "";
+		for (String temp : evaluator) {
+			evalList = evalList + temp + ",";
+		}
+		cosc470.compiler.v3.database.Database.addEvaluatorListItem(evalList);
+		// System.out.println("\n"+evalList);
+	}
+
+	private void checkTypes() {
+		String name = "", type = "", value = "";
+		int size = 0;
+
+		for (int i = 0; i < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); i++) {
+			name = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getName();
+			type = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getType();
+			value = cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getValue();
+			if (!(cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getSize().matches("[0-9]*"))) {
+				System.out.printf("ERROR: Variable %s size has not been correctly set.", name);
+				System.exit(0);
+			}
+			cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).setSize(Integer.toString(value.length()));
+			size = Integer.parseInt(cosc470.compiler.v3.database.Database.getSymbolTableItems().get(i).getSize());
+			if (!(value.equals(""))) {
+				if (type.equals("NUMBER")) {
+					if (!(value.matches("-?\\d+(\\.\\d+)?"))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("POSITIVE")) {
+					if (!(value.matches("\\d+(\\.\\d+)?"))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("SMALLINT")) {
+					if (!(value.matches("-?\\d+(\\.\\d+)?"))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					} else if (!((Integer.parseInt(value)) <= 32767)) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					} else if (!((Integer.parseInt(value)) >= -32768)) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("BOOLEAN")) {
+					if (!((value.equals("TRUE")) || (value.equals("FALSE")))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				} else if (type.equals("CHAR")) {
+					if (!(value.length() == 3)) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					} else if (!((value.startsWith("'")) && (value.endsWith("'")))) {
+						System.out.printf("ERROR: Variable %s value has not been correctly set; value: %s", name, value);
+						System.exit(0);
+					}
+				}
+
+			}
+		}
+
+	}
+
+	private void allOperationsHelper() {
+		boolean found = false;
 		for (int i = 0; i < evaluator.size(); i++) {
-			if (evaluator.get(i).contains("Expression(")) {
-				holder = evaluator.get(i).substring((evaluator.get(i).indexOf('(') + 1), (evaluator.get(i).indexOf(')'))).trim();
-				holder = processExpression(holder);
-				evaluator.remove(i);
-				evaluator.add(i, holder);
+			found = ifThenEndLoop(i);
+			if (found == true) {
+				break;
+			}
+
+			found = userInput(i);
+			if (found == true) {
+				break;
+			}
+			found = whileLoop(i);
+			if (found == true) {
+				break;
+			}
+			found = leftHandSideOperator(i);
+
+			if (found == true) {
+				break;
+			}
+			found = printStatements(i);
+			if (found == true) {
+				break;
 			}
 		}
 	}
@@ -372,7 +372,7 @@ public class AntlrOperator {
 			}
 
 			if (accepted == true) {
-				chest = new ArrayList<String>();
+				ArrayList<String> chest = new ArrayList<String>();
 				keeper = i + 3;
 				while (keeper < pacer) {
 					chest.add(evaluator.get(keeper));
@@ -412,16 +412,25 @@ public class AntlrOperator {
 		int pacer, counter;
 		if (evaluator.get(i).equals("AntlrOperator.leftHandSideOperator{")) {
 			found = true;
-			chest = new ArrayList<String>();
+			ArrayList<String> chest = new ArrayList<String>();
 			pacer = i;
 			counter = 0;
 			while (!(evaluator.get(pacer).equals("}"))) {
 				if (counter > 0) {
-					chest.add(evaluator.get(pacer));
+					if (evaluator.get(pacer).contains("Expression(")) {
+						// sent to expression handler method here
+						chest.add(expressionHandler(evaluator.get(pacer).substring((evaluator.get(pacer).indexOf("(") + 1), (evaluator.get(pacer).indexOf(')'))).trim()));
+					} else {
+						chest.add(evaluator.get(pacer));
+					}
 				}
 				counter++;
 				pacer++;
 			}
+
+			// System.out.println("\n\n"); for(String temp: chest){
+			// System.out.println(temp); }
+
 			counter++;
 			for (int j = 0; j < cosc470.compiler.v3.database.Database.getSymbolTableItems().size(); j++) {
 				if (cosc470.compiler.v3.database.Database.getSymbolTableItems().get(j).getName().equals(chest.get(0))) {
@@ -521,6 +530,67 @@ public class AntlrOperator {
 		}
 		return found;
 
+	}
+
+	private String expressionHandler(String expression) {
+		// System.out.println(expression);
+		String holder = "";
+		int counter = 0;
+		List<String> expressionSplit = new ArrayList<String>(Arrays.asList(expression.split("(?<=[-,+,*,/,%,<,>,=])|(?=[-,+,*,/,%,<,>,=])")));
+
+		// System.out.println("\n"); for (String temp : expressionSplit)
+		// {System.out.println(temp); } System.out.println("\n");
+
+		for (int i = 0; i < expressionSplit.size(); i++) {
+			if (!((expressionSplit.get(i).matches("-?\\d+(\\.\\d+)?") || (expressionSplit.get(i).matches("[-,+,*,/,%,<,>,=]"))))) {
+				holder = expressionSplit.get(i);
+				// System.out.println(holder);
+				counter = 0;
+				while (holder.contains("NOT")) {
+					holder = holder.substring(holder.indexOf("NOT") + 3);
+					counter++;
+				}
+				// System.out.println(holder);
+				// System.out.println(counter + "\n\n");
+
+				if (counter % 2 == 0) {
+					// System.out.println("No Change In: " + holder);
+					holder = getSymbolTableValue_byName(holder);
+					// System.out.println("Original: "+holder);
+					// System.out.println("Changed: "+holder);
+
+				} else if (counter % 2 == 1) {
+					// System.out.println("Will Be Change In: " + holder);
+					holder = getSymbolTableValue_byName(holder);
+					// System.out.println("Original: "+holder);
+
+					if (holder.equals("TRUE")) {
+						holder = "FALSE";
+					} else if (holder.equals("FALSE")) {
+						holder = "TRUE";
+					} else if (holder.matches("-?\\d+(\\.\\d+)?")) {
+						holder = Integer.toString((Integer.parseInt(holder)) * -1);
+					}
+					// System.out.println("Changed: "+holder);
+				}
+				expressionSplit.remove(i);
+				expressionSplit.add(i, holder);
+			}
+		}
+
+		// System.out.println("\n"); for (String temp : expressionSplit)
+		// {System.out.println(temp); } System.out.println("\n");
+
+		holder = "";
+		for (String temp : expressionSplit) {
+			holder = holder + temp;
+		}
+
+		// System.out.println(holder);
+		holder = processExpression(holder);
+		// System.out.println(holder);
+
+		return holder;
 	}
 
 	public static String processExpression(String expression) {
